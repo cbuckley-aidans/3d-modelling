@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHAPR3D TUTORIALS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f7f7f7;
+            --accent-bg: #f0f0f0;
+            --accent-color: #0066CC;
+            --active-color: #0066CC;
+            --outline-color: #191919;
+            --text-color: #191919;
+            --shadow-sm: 0 0.15em 0 var(--outline-color);
+            --shadow-md: 0 0.25em 0 var(--outline-color);
+            --border-radius: 0.6em;
+            --transition-time: 0.15s;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--primary-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            letter-spacing: -0.01em;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 14px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background-color: var(--secondary-bg);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: var(--accent-color);
+            border: 3px solid var(--secondary-bg);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: var(--active-color);
+            transform: scale(1.05);
+        }
+
+        /* Typography */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-top: 0;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
+
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 1px;
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .title-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Cards Container */
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Card Design */
+        .card {
+            background-color: var(--primary-bg);
+            border: 2px solid var(--outline-color);
+            border-radius: var(--border-radius);
+            padding: 30px;
+            transition: transform var(--transition-time), box-shadow var(--transition-time);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(0);
+            text-decoration: none;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            width: 280px;
+        }
+
+        .card:hover {
+            transform: translateY(-0.25em);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background-color: var(--accent-color);
+        }
+
+        .card-icon {
+            width: 80px;
+            height: 80px;
+            background-color: var(--accent-color);
+            border: 2px solid var(--outline-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: transform var(--transition-time), box-shadow var(--transition-time);
+            box-shadow: var(--shadow-sm);
+            transform: translateY(0);
+        }
+
+        .card:hover .card-icon {
+            transform: translateY(-0.25em);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-icon i {
+            font-size: 2rem;
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            text-align: center;
+            line-height: 1.5;
+            color: var(--text-color);
+        }
+
+        /* Card color variations */
+        .card-basics::before {
+            background-color: #4285F4;
+        }
+        .card-basics .card-icon {
+            background-color: #4285F4;
+        }
+
+        .card-negative::before {
+            background-color: #34A853;
+        }
+        .card-negative .card-icon {
+            background-color: #34A853;
+        }
+
+        .card-chamfer::before {
+            background-color: #FBBC05;
+        }
+        .card-chamfer .card-icon {
+            background-color: #FBBC05;
+        }
+
+        .card-offset::before {
+            background-color: #EA4335;
+        }
+        .card-offset .card-icon {
+            background-color: #EA4335;
+        }
+
+        .card-revolve::before {
+            background-color: #8E44AD;
+        }
+        .card-revolve .card-icon {
+            background-color: #8E44AD;
+        }
+
+        /* Logo */
+        .logo-container {
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            color: var(--accent-color);
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .main-container {
+                padding: 40px 15px;
+            }
+
+            .cards-container {
+                gap: 20px;
+            }
+
+            .card {
+                padding: 20px;
+                width: 240px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .card {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="title-container">
+            <div class="logo-container">
+                <div class="logo">SHAPR3D</div>
+            </div>
+            <h1>3D MODELING TUTORIALS</h1>
+        </div>
+
+        <div class="cards-container">
+            <a href="sketching-and-basic-extruding.html" class="card card-basics">
+                <div class="card-icon">
+                    <i class="fa-solid fa-pencil"></i>
+                </div>
+                <h2 class="card-title">Basic Sketching and Extruding</h2>
+                <p class="card-description">Learn how to create 2D sketches and transform them into 3D objects through extrusion.</p>
+            </a>
+            
+            <a href="negative-extruding.html" class="card card-negative">
+                <div class="card-icon">
+                    <i class="fa-solid fa-eraser"></i>
+                </div>
+                <h2 class="card-title">Negative Extruding</h2>
+                <p class="card-description">Discover how to create holes, cutouts, and cavities in your 3D models with negative extrusions.</p>
+            </a>
+            
+            <a href="chamfering.html" class="card card-chamfer">
+                <div class="card-icon">
+                    <i class="fa-solid fa-border-all"></i>
+                </div>
+                <h2 class="card-title">Chamfering and Bevelling</h2>
+                <p class="card-description">Add professional finishing touches by creating angled edges on your 3D models.</p>
+            </a>
+            
+            <a href="offsetting.html" class="card card-offset">
+                <div class="card-icon">
+                    <i class="fa-solid fa-expand"></i>
+                </div>
+                <h2 class="card-title">Offsetting</h2>
+                <p class="card-description">Learn to create parallel outlines of existing shapes for walls, shells, and precise measurements.</p>
+            </a>
+            
+            <a href="revolving.html" class="card card-revolve">
+                <div class="card-icon">
+                    <i class="fa-solid fa-rotate"></i>
+                </div>
+                <h2 class="card-title">Revolving</h2>
+                <p class="card-description">Create cylindrical objects by revolving 2D profiles around an axis—perfect for vases, bottles, and wheels.</p>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
