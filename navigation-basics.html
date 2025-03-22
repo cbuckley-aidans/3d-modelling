@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shapr3D Navigation Basics</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/6.0.0/intro.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/6.0.0/introjs.min.css">
+</head>
+<body>
+    <div class="tutorial-container">
+        <!-- Left Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-logo">SHAPR3D<br>NAVIGATION</div>
+            <div class="step-button active" data-step="0" data-tooltip="Introduction">
+                <i class="fas fa-list-ol"></i>
+            </div>
+            <div class="step-button" data-step="1" data-tooltip="Panning">
+                <span>1</span>
+            </div>
+            <div class="step-button" data-step="2" data-tooltip="Rotating">
+                <span>2</span>
+            </div>
+            <div class="step-button" data-step="3" data-tooltip="Zooming">
+                <span>3</span>
+            </div>
+            <div class="step-button" data-step="4" data-tooltip="Perspective Lock">
+                <span>4</span>
+            </div>
+        </div>
+
+        <!-- Middle Instructions Panel -->
+        <div class="instructions-panel">
+            <h1 id="current-step-title">Introduction</h1>
+            
+            <div id="step-instructions">
+                <!-- Will be populated by JavaScript -->
+                <h3>Learning Intentions and Success Criteria</h3>
+                
+                <div class="card">
+                    <p><strong>Learning Intentions:</strong></p>
+                    <ol class="steps-list">
+                        <li>Understand the basic navigation controls in Shapr3D</li>
+                        <li>Learn efficient ways to view your 3D models from different angles</li>
+                        <li>Master essential workspace navigation shortcuts</li>
+                    </ol>
+                
+                    <p><strong>Success Criteria:</strong></p>
+                    <ol class="steps-list">
+                        <li>Confidently navigate the 3D workspace using mouse controls</li>
+                        <li>Switch between different viewpoints quickly</li>
+                        <li>Move around your designs efficiently without getting disoriented</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button id="prevButton" class="nav-button" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="nextButton" class="nav-button">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-text">Progress: <span id="progress-percentage">0%</span></div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="footer">
+                Made with <span style="color: var(--accent-color);">♥</span> by <span id="creator-name">Buckley</span>
+            </div>
+        </div>
+
+        <!-- Right Content Display Area -->
+        <div class="content-display">
+            <div class="card">
+                <h2 id="content-title">Introduction</h2>
+                <div id="media-content">
+                    <!-- Will be populated by JavaScript -->
+                    <div class="alert-box alert-info">
+                        <p><strong>Tutorial Overview</strong></p>
+                        <p>Welcome to Shapr3D navigation basics! In this tutorial, you'll learn the fundamental skills for navigating the 3D workspace efficiently. These skills will help you view and manipulate your designs from any angle.</p>
+                    </div>
+
+                    <div class="alert-box alert-warning">
+                        <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
+                        <p>Click the button below to learn how to navigate this tutorial page. Then proceed through each step to master Shapr3D navigation.</p>
+                        <button id="startWalkthrough" class="nav-button">
+                            <i class="fas fa-walking"></i> Start Interactive Tour
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing images -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" class="modal-content">
+    </div>
+
+    <script>
+        // Tutorial content configuration
+        // Define your step titles
+        const stepTitles = [
+            "Introduction",
+            "Panning with Middle Mouse Button",
+            "Rotating with Right Mouse Button",
+            "Zooming with Mouse Wheel",
+            "Quick View with Perspective Cube"
+        ];
+
+        // Define your step instructions (middle panel content)
+        const stepInstructions = [
+            // Step 0: Introduction
+            `<h3>Introduction to Shapr3D Navigation</h3>
+            
+            <div class="card">
+                <p><strong>Learning Intentions:</strong></p>
+                <ol class="steps-list">
+                    <li>Understand the basic navigation controls in Shapr3D</li>
+                    <li>Learn efficient ways to view your 3D models from different angles</li>
+                    <li>Master essential workspace navigation shortcuts</li>
+                </ol>
+            
+                <p><strong>Success Criteria:</strong></p>
+                <ol class="steps-list">
+                    <li>Confidently navigate the 3D workspace using mouse controls</li>
+                    <li>Switch between different viewpoints quickly</li>
+                    <li>Move around your designs efficiently without getting disoriented</li>
+                </ol>
+            </div>`,
+            
+            // Step 1: Panning
+            `<h3>Panning in Shapr3D</h3>
+            <p>Panning allows you to move your view horizontally or vertically without changing the angle or distance.</p>
+            
+            <div class="card">
+                <h4>How to Pan:</h4>
+                <ol class="steps-list">
+                    <li>Hold down the <span class="kbd">Middle Mouse Button</span> (press down on the scroll wheel)</li>
+                    <li>Drag your mouse in any direction to move the view</li>
+                    <li>Release the middle mouse button when your model is positioned where you want it</li>
+                </ol>
+                
+                <div class="tip-box">
+                    <div class="tip-title"><i class="fas fa-lightbulb"></i> Pro Tip</div>
+                    <p>If you're using a trackpad or a mouse without a middle button, you can typically use the keyboard combination <span class="kbd">Alt</span> + <span class="kbd">Left Click</span> to pan.</p>
+                </div>
+            </div>`,
+            
+            // Step 2: Rotating
+            `<h3>Rotating in Shapr3D</h3>
+            <p>Rotation lets you see your model from different angles, essential for 3D modeling.</p>
+            
+            <div class="card">
+                <h4>How to Rotate:</h4>
+                <ol class="steps-list">
+                    <li>Hold down the <span class="kbd">Right Mouse Button</span></li>
+                    <li>Drag in any direction to orbit around your model</li>
+                    <li>Move horizontally to rotate around the vertical axis</li>
+                    <li>Move vertically to rotate around the horizontal axis</li>
+                </ol>
+                
+                <div class="tip-box">
+                    <div class="tip-title"><i class="fas fa-lightbulb"></i> Pro Tip</div>
+                    <p>Try to maintain a point of reference as you rotate to avoid getting disoriented. Watch how the grid and axes change to understand your current orientation.</p>
+                </div>
+            </div>`,
+            
+            // Step 3: Zooming
+            `<h3>Zooming in Shapr3D</h3>
+            <p>Zooming allows you to get closer to or further from your model for detailed work or overall perspective.</p>
+            
+            <div class="card">
+                <h4>How to Zoom:</h4>
+                <ol class="steps-list">
+                    <li>Scroll <span class="kbd">Up</span> with your mouse wheel to zoom in</li>
+                    <li>Scroll <span class="kbd">Down</span> with your mouse wheel to zoom out</li>
+                    <li>Pay attention to the current scale indicator if available</li>
+                </ol>
+                
+                
+            </div>`,
+            
+            // Step 4: Perspective Cube
+            `<h3>Using the Perspective Cube</h3>
+            <p>The Perspective Cube (also called the ViewCube) is a quick way to snap to standard views.</p>
+            
+            <div class="card">
+                <h4>How to Use the Perspective Cube:</h4>
+                <ol class="steps-list">
+                    <li>Look for the cube widget in the top-right corner of the workspace</li>
+                    <li>Click on any face of the cube to instantly view your model from that direction</li>
+                    <li>Click on the edges or corners for angled views</li>
+                    <li>Use the home button near the cube to reset to the default view</li>
+                </ol>
+                
+                <div class="tip-box">
+                    <div class="tip-title"><i class="fas fa-lightbulb"></i> Pro Tip</div>
+                    <p>The six standard views are: Top, Bottom, Front, Back, Left, and Right. Learning these orientations is crucial for efficient 3D modeling.</p>
+                </div>
+                
+                
+            </div>`,
+        ];
+
+        // Define your media content (right panel)
+        const stepMedia = [
+            // Step 0: Introduction
+            `<div class="alert-box alert-info">
+                <p><strong>Tutorial Overview</strong></p>
+                <p>Welcome to Shapr3D navigation basics! In this tutorial, you'll learn the fundamental skills for navigating the 3D workspace efficiently. These skills will help you view and manipulate your designs from any angle.</p>
+            </div>
+
+            <div class="alert-box alert-warning">
+                <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
+                <p>Click the button below to learn how to navigate this tutorial page. Then proceed through each step to master Shapr3D navigation.</p>
+                <button id="startWalkthrough" class="nav-button">
+                    <i class="fas fa-walking"></i> Start Interactive Tour
+                </button>
+            </div>`,
+            
+            // Step 1: Panning
+            `<div class="video-container">
+                <video width="100%" controls autoplay loop muted playsinline>
+                    <source src="https://i.imgur.com/mobtfyy.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p><em>Video: Holding the middle mouse button and dragging to pan the view in Shapr3D</em></p>
+            </div>
+            
+            <div class="alert-box alert-info">
+                <p><strong>Why Panning is Important</strong></p>
+                <p>Efficient panning allows you to quickly reposition your view without changing your perspective. This is especially useful when working on large models or when you need to focus on different areas while maintaining the same viewing angle.</p>
+            </div>`,
+            
+            // Step 2: Rotating
+            `<div class="video-container">
+                <video width="100%" controls autoplay loop muted playsinline>
+                    <source src="https://i.imgur.com/AoYlGlB.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p><em>Video: Holding the right mouse button and dragging to rotate the view in Shapr3D</em></p>
+            </div>
+            
+            <div class="alert-box alert-info">
+                <p><strong>Understanding Rotation</strong></p>
+                <p>Rotation in Shapr3D uses an orbit system - meaning you orbit around your model or the current center of interest. This is different from a free-fly camera where you would be changing your own position in space.</p>
+            </div>`,
+            
+            // Step 3: Zooming
+            `<div class="video-container">
+                <video width="100%" controls autoplay loop muted playsinline>
+                    <source src="https://i.imgur.com/K6jx08E.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p><em>Video: Using the mouse wheel to zoom in and out in Shapr3D</em></p>
+            </div>
+            
+            `,
+            
+            // Step 4: Perspective Cube
+            `<div class="video-container">
+                <video width="100%" controls autoplay loop muted playsinline>
+                    <source src="https://i.imgur.com/Hp9Yfc7.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <p><em>Video: Clicking on the perspective cube to quickly change views in Shapr3D</em></p>
+            </div>
+            
+            `,
+        ];
+
+        // Current step tracking
+        let currentStep = 0;
+        const totalSteps = stepInstructions.length;
+
+        // DOM Elements
+        const stepButtons = document.querySelectorAll('.step-button');
+        const stepTitleEl = document.getElementById('current-step-title');
+        const instructionsPanel = document.getElementById('step-instructions');
+        const mediaContent = document.getElementById('media-content');
+        const contentTitle = document.getElementById('content-title');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressBar = document.querySelector('.progress');
+        const progressPercentage = document.getElementById('progress-percentage');
+
+        // Image modal
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalClose = document.querySelector('.modal-close');
+
+        // Initialize the tutorial
+        function showStep(step) {
+            // Update active step button
+            stepButtons.forEach((button, index) => {
+                button.classList.toggle('active', index === step);
+            });
+
+            // Update step title
+            stepTitleEl.textContent = stepTitles[step];
+            contentTitle.textContent = stepTitles[step];
+
+            // Update content
+            instructionsPanel.innerHTML = stepInstructions[step];
+            mediaContent.innerHTML = stepMedia[step];
+
+            // Update navigation buttons
+            prevButton.disabled = step === 0;
+            nextButton.style.display = step === totalSteps - 1 ? 'none' : 'flex';
+            
+            // Update progress
+            const progress = Math.round(((step + 1) / totalSteps) * 100);
+            progressBar.style.width = `${progress}%`;
+            progressPercentage.textContent = `${progress}%`;
+            
+            // Bind startWalkthrough button if it exists in this step
+            const walkButton = document.getElementById('startWalkthrough');
+            if (walkButton) {
+                walkButton.addEventListener('click', startIntroJs);
+            }
+            
+            currentStep = step;
+        }
+
+        // Simple tooltip implementation
+        function setupTooltips() {
+            // Remove any existing tooltips
+            const existingTooltips = document.querySelectorAll('.tooltip');
+            existingTooltips.forEach(t => t.remove());
+            
+            // Create new tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            document.body.appendChild(tooltip);
+            
+            // Add event listeners to all step buttons
+            const stepButtons = document.querySelectorAll('.step-button');
+            stepButtons.forEach(button => {
+                const tooltipText = button.getAttribute('data-tooltip');
+                if (!tooltipText) return;
+                
+                // On mouse enter
+                button.addEventListener('mouseenter', () => {
+                    // Set tooltip text
+                    tooltip.textContent = tooltipText;
+                    
+                    // Position tooltip based on viewport width
+                    const rect = button.getBoundingClientRect();
+                    if (window.innerWidth <= 1024) {
+                        // Position below on mobile
+                        tooltip.className = 'tooltip bottom';
+                        tooltip.style.top = `${rect.bottom + 10}px`;
+                        tooltip.style.left = `${rect.left + rect.width/2}px`;
+                        tooltip.style.transform = 'translateX(-50%)';
+                    } else {
+                        // Position to the right on desktop
+                        tooltip.className = 'tooltip right';
+                        tooltip.style.top = `${rect.top + rect.height/2}px`;
+                        tooltip.style.left = `${rect.right + 10}px`;
+                        tooltip.style.transform = 'translateY(-50%)';
+                    }
+                    
+                    // Make tooltip visible
+                    tooltip.style.opacity = '1';
+                });
+                
+                // On mouse leave
+                button.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+            });
+        }
+
+        // Event Listeners
+        stepButtons.forEach((button, index) => {
+            button.addEventListener('click', () => showStep(index));
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentStep < totalSteps - 1) showStep(currentStep + 1);
+        });
+
+        // Image modal functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG' && e.target.parentElement.classList.contains('image-container')) {
+                modal.style.display = 'block';
+                modalImg.src = e.target.src;
+                modalImg.alt = e.target.alt;
+            }
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Creator name with confetti
+        document.getElementById('creator-name').addEventListener('click', () => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.8 },
+                colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
+            });
+        });
+
+        // Initialize introjs walkthrough
+        function startIntroJs() {
+            const intro = introJs();
+            
+            intro.setOptions({
+                steps: [
+                    {
+                        element: document.querySelector('.sidebar'),
+                        intro: 'Use these numbered icons to navigate between different steps of the tutorial. Click on any number to jump directly to that step.',
+                        position: 'right'
+                    },
+                    {
+                        element: document.querySelector('.instructions-panel'),
+                        intro: 'Read the step-by-step instructions in this middle panel. These detailed instructions will guide you through each Shapr3D navigation technique.',
+                        position: 'right'
+                    },
+                    {
+                        element: document.querySelector('.content-display'),
+                        intro: 'View demonstration videos that show exactly how to perform each navigation action in Shapr3D.',
+                        position: 'left'
+                    },
+                    {
+                        element: document.querySelector('.navigation'),
+                        intro: 'Use these buttons to move forward and backward through the tutorial steps.',
+                        position: 'top'
+                    },
+                    {
+                        element: document.getElementById('current-step-title'),
+                        intro: 'This shows which navigation technique you are currently learning. Always check this to know where you are in the tutorial.',
+                        position: 'bottom'
+                    }
+                ],
+                showBullets: true,
+                showProgress: true,
+                disableInteraction: false,
+                doneLabel: 'Got it!'
+            });
+            
+            intro.start();
+            
+            // After tour completes, show a success message
+            intro.oncomplete(function() {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
+                });
+            });
+        }
+
+        // Initialize with first step and set up tooltips
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(0);
+            setupTooltips();
+            
+            // Attach event listener to walkthrough button
+            const walkButton = document.getElementById('startWalkthrough');
+            if (walkButton) {
+                walkButton.addEventListener('click', startIntroJs);
+            }
+            
+            // Update tooltips on window resize
+            window.addEventListener('resize', () => {
+                setupTooltips();
+            });
+            
+            // Update tooltips whenever a step button is clicked
+            document.querySelectorAll('.step-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    setTimeout(setupTooltips, 100);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
