@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shapr3D Navigation Basics</title>
+    <title>Shell Tool in Shapr3D Tutorial</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,21 +23,12 @@
     <div class="tutorial-container">
         <!-- Left Sidebar Navigation -->
         <div class="sidebar">
-            <div class="sidebar-logo">SHAPR3D<br>NAVIGATION</div>
+            <div class="sidebar-logo">SHAPR3D<br>SHELL TOOL</div>
             <div class="step-button active" data-step="0" data-tooltip="Introduction">
                 <i class="fas fa-list-ol"></i>
             </div>
-            <div class="step-button" data-step="1" data-tooltip="Panning">
+            <div class="step-button" data-step="1" data-tooltip="Shell Process">
                 <span>1</span>
-            </div>
-            <div class="step-button" data-step="2" data-tooltip="Rotating">
-                <span>2</span>
-            </div>
-            <div class="step-button" data-step="3" data-tooltip="Zooming">
-                <span>3</span>
-            </div>
-            <div class="step-button" data-step="4" data-tooltip="Perspective Lock">
-                <span>4</span>
             </div>
         </div>
 
@@ -52,16 +43,14 @@
                 <div class="card">
                     <p><strong>Learning Intentions:</strong></p>
                     <ol class="steps-list">
-                        <li>Understand the basic navigation controls in Shapr3D</li>
-                        <li>Learn efficient ways to view your 3D models from different angles</li>
-                        <li>Master essential workspace navigation shortcuts</li>
+                        <li>Learn how to use the Shell tool in Shapr3D</li>
+                        <li>Apply the Shell effect to create hollow objects</li>
                     </ol>
                 
                     <p><strong>Success Criteria:</strong></p>
                     <ol class="steps-list">
-                        <li>Confidently navigate the 3D workspace using mouse controls</li>
-                        <li>Switch between different viewpoints quickly</li>
-                        <li>Move around your designs efficiently without getting disoriented</li>
+                        <li>Successfully select a face to exclude from the shell operation</li>
+                        <li>Create a hollow object with uniform wall thickness</li>
                     </ol>
                 </div>
             </div>
@@ -93,12 +82,12 @@
                     <!-- Will be populated by JavaScript -->
                     <div class="alert-box alert-info">
                         <p><strong>Tutorial Overview</strong></p>
-                        <p>Welcome to Shapr3D navigation basics! In this tutorial, you'll learn the fundamental skills for navigating the 3D workspace efficiently. These skills will help you view and manipulate your designs from any angle.</p>
+                        <p>This tutorial will guide you through using the Shell tool in Shapr3D. You'll learn how to create hollow objects with uniform wall thickness by removing internal material while leaving one face open.</p>
                     </div>
 
                     <div class="alert-box alert-warning">
                         <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
-                        <p>Click the button below to learn how to navigate this tutorial page. Then proceed through each step to master Shapr3D navigation.</p>
+                        <p>Click the button below to learn how to navigate the page.</p>
                         <button id="startWalkthrough" class="nav-button">
                             <i class="fas fa-walking"></i> Start Interactive Tour
                         </button>
@@ -119,105 +108,52 @@
         // Define your step titles
         const stepTitles = [
             "Introduction",
-            "Panning with Middle Mouse Button",
-            "Rotating with Right Mouse Button",
-            "Zooming with Mouse Wheel",
-            "Quick View with Perspective Cube"
+            "Shell Process"
         ];
 
         // Define your step instructions (middle panel content)
         const stepInstructions = [
             // Step 0: Introduction
-            `<h3>Introduction to Shapr3D Navigation</h3>
+            `<h3>Introduction to the Shell Tool in Shapr3D</h3>
             
             <div class="card">
                 <p><strong>Learning Intentions:</strong></p>
                 <ol class="steps-list">
-                    <li>Understand the basic navigation controls in Shapr3D</li>
-                    <li>Learn efficient ways to view your 3D models from different angles</li>
-                    <li>Master essential workspace navigation shortcuts</li>
+                    <li>Learn how to use the Shell tool in Shapr3D</li>
+                    <li>Apply the Shell effect to create hollow objects</li>
                 </ol>
             
                 <p><strong>Success Criteria:</strong></p>
                 <ol class="steps-list">
-                    <li>Confidently navigate the 3D workspace using mouse controls</li>
-                    <li>Switch between different viewpoints quickly</li>
-                    <li>Move around your designs efficiently without getting disoriented</li>
+                    <li>Successfully select a face to exclude from the shell operation</li>
+                    <li>Create a hollow object with uniform wall thickness</li>
                 </ol>
-            </div>`,
+            </div>
             
-            // Step 1: Panning
-            `<h3>Panning in Shapr3D</h3>
-            <p>Panning allows you to move your view horizontally or vertically without changing the angle or distance.</p>
+            <div class="tip-box">
+                <div class="tip-title"><i class="fas fa-lightbulb"></i> What is the Shell Tool?</div>
+                <p>The Shell tool removes material from the interior of a solid object while maintaining a consistent wall thickness. It creates hollow objects with one or more open faces, saving material and reducing weight while maintaining structural integrity.</p>
+            </div>
+            `,
+            
+            // Step 1: Shell Process
+            `<h3>Using the Shell Tool</h3>
+            <p>The Shell process allows you to hollow out a solid object while maintaining uniform wall thickness.</p>
             
             <div class="card">
-                <h4>How to Pan:</h4>
+                <h4>Shell Process:</h4>
                 <ol class="steps-list">
-                    <li>Hold down the <span class="kbd">Middle Mouse Button</span> (press down on the scroll wheel)</li>
-                    <li>Drag your mouse in any direction to move the view</li>
-                    <li>Release the middle mouse button when your model is positioned where you want it</li>
+                    <li><strong>Select a Face:</strong> Tap once on the face you want to keep open. This face will be removed while the rest of the object becomes hollow.</li>
+                    <li><strong>Access the Shell Tool:</strong> Click on the "Shell" option in the left toolbar.</li>
+                    <li><strong>Set Wall Thickness:</strong> Drag the arrow to adjust the thickness of the walls. The preview will update to show the resulting shell.</li>
+                    <li><strong>Confirm:</strong> Simply click away from the model to apply the shell effect.</li>
                 </ol>
-                
-                <div class="tip-box">
-                    <div class="tip-title"><i class="fas fa-lightbulb"></i> Pro Tip</div>
-                    <p>If you're using a trackpad or a mouse without a middle button, you can typically use the keyboard combination <span class="kbd">Alt</span> + <span class="kbd">Left Click</span> to pan.</p>
-                </div>
-            </div>`,
+            </div>
             
-            // Step 2: Rotating
-            `<h3>Rotating in Shapr3D</h3>
-            <p>Rotation lets you see your model from different angles, essential for 3D modeling.</p>
-            
-            <div class="card">
-                <h4>How to Rotate:</h4>
-                <ol class="steps-list">
-                    <li>Hold down the <span class="kbd">Right Mouse Button</span></li>
-                    <li>Drag in any direction to orbit around your model</li>
-                    <li>Move horizontally to rotate around the vertical axis</li>
-                    <li>Move vertically to rotate around the horizontal axis</li>
-                </ol>
-                
-                <div class="tip-box">
-                    <div class="tip-title"><i class="fas fa-lightbulb"></i> Pro Tip</div>
-                    <p>Try to maintain a point of reference as you rotate to avoid getting disoriented. Watch how the grid and axes change to understand your current orientation.</p>
-                </div>
-            </div>`,
-            
-            // Step 3: Zooming
-            `<h3>Zooming in Shapr3D</h3>
-            <p>Zooming allows you to get closer to or further from your model for detailed work or overall perspective.</p>
-            
-            <div class="card">
-                <h4>How to Zoom:</h4>
-                <ol class="steps-list">
-                    <li>Scroll <span class="kbd">Up</span> with your mouse wheel to zoom in</li>
-                    <li>Scroll <span class="kbd">Down</span> with your mouse wheel to zoom out</li>
-                    <li>Pay attention to the current scale indicator if available</li>
-                </ol>
-                
-                
-            </div>`,
-            
-            // Step 4: Perspective Cube
-            `<h3>Using the Perspective Cube</h3>
-            <p>The Perspective Cube (also called the ViewCube) is a quick way to snap to standard views.</p>
-            
-            <div class="card">
-                <h4>How to Use the Perspective Cube:</h4>
-                <ol class="steps-list">
-                    <li>Look for the cube widget in the top-right corner of the workspace</li>
-                    <li>Click on any face of the cube to instantly view your model from that direction</li>
-                    <li>Click on the edges or corners for angled views</li>
-                    <li>Use the home button near the cube to reset to the default view</li>
-                </ol>
-                
-                <div class="tip-box">
-                    <div class="tip-title"><i class="fas fa-lightbulb"></i> Pro Tip</div>
-                    <p>The six standard views are: Top, Bottom, Front, Back, Left, and Right. Learning these orientations is crucial for efficient 3D modeling.</p>
-                </div>
-                
-                
-            </div>`,
+            <div class="tip-box">
+                <div class="tip-title"><i class="fas fa-exclamation-triangle"></i> Important Note</div>
+                <p>The face you select will be removed completely, creating an opening in your object. The remaining structure will have walls with the thickness you specified.</p>
+            </div>`
         ];
 
         // Define your media content (right panel)
@@ -225,66 +161,42 @@
             // Step 0: Introduction
             `<div class="alert-box alert-info">
                 <p><strong>Tutorial Overview</strong></p>
-                <p>Welcome to Shapr3D navigation basics! In this tutorial, you'll learn the fundamental skills for navigating the 3D workspace efficiently. These skills will help you view and manipulate your designs from any angle.</p>
+                <p>This tutorial will guide you through using the Shell tool in Shapr3D. You'll learn how to create hollow objects with uniform wall thickness by removing internal material while leaving one face open.</p>
             </div>
 
             <div class="alert-box alert-warning">
                 <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
-                <p>Click the button below to learn how to navigate this tutorial page. Then proceed through each step to master Shapr3D navigation.</p>
+                <p>Click the button below to learn how to navigate the page.</p>
                 <button id="startWalkthrough" class="nav-button">
                     <i class="fas fa-walking"></i> Start Interactive Tour
                 </button>
-            </div>`,
+            </div>
+            `,
             
-            // Step 1: Panning
+            // Step 1: Shell Process
             `<div class="video-container">
                 <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/mobtfyy.mp4" type="video/mp4">
+                    <source src="https://i.imgur.com/TVJWC9w.mp4" type="video/mp4">
                     Your browser does not support the video tag.
                 </video>
-                <p><em>Video: Holding the middle mouse button and dragging to pan the view in Shapr3D</em></p>
             </div>
             
             <div class="alert-box alert-info">
-                <p><strong>Why Panning is Important</strong></p>
-                <p>Efficient panning allows you to quickly reposition your view without changing your perspective. This is especially useful when working on large models or when you need to focus on different areas while maintaining the same viewing angle.</p>
-            </div>`,
-            
-            // Step 2: Rotating
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/AoYlGlB.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p><em>Video: Holding the right mouse button and dragging to rotate the view in Shapr3D</em></p>
+                <p><strong>Video Guide</strong></p>
+                <p>This video demonstrates the shell process:</p>
+                <p>1. Select the face of the cylinder</p>
+                <p>2. Access the Shell tool from the left toolbar</p>
+                <p>3. Drag the arrow to set the wall thickness</p>
+                <p>4. Click away to complete the operation</p>
             </div>
             
-            <div class="alert-box alert-info">
-                <p><strong>Understanding Rotation</strong></p>
-                <p>Rotation in Shapr3D uses an orbit system - meaning you orbit around your model or the current center of interest. This is different from a free-fly camera where you would be changing your own position in space.</p>
-            </div>`,
-            
-            // Step 3: Zooming
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/K6jx08E.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p><em>Video: Using the mouse wheel to zoom in and out in Shapr3D</em></p>
-            </div>
-            
-            `,
-            
-            // Step 4: Perspective Cube
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/Hp9Yfc7.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p><em>Video: Clicking on the perspective cube to quickly change views in Shapr3D</em></p>
-            </div>
-            
-            `,
+            <div class="alert-box alert-warning">
+                <p><strong><i class="fas fa-exclamation-triangle"></i> Common Mistakes</strong></p>
+                <p>1. Setting wall thickness too thin for practical manufacturing</p>
+                <p>2. Selecting the wrong face to remove</p>
+                <p>3. Not checking if the shelled object has sufficient structural integrity</p>
+                <p>4. Forgetting to verify the shell created successfully throughout the object</p>
+            </div>`
         ];
 
         // Current step tracking
@@ -330,12 +242,6 @@
             const progress = Math.round(((step + 1) / totalSteps) * 100);
             progressBar.style.width = `${progress}%`;
             progressPercentage.textContent = `${progress}%`;
-            
-            // Bind startWalkthrough button if it exists in this step
-            const walkButton = document.getElementById('startWalkthrough');
-            if (walkButton) {
-                walkButton.addEventListener('click', startIntroJs);
-            }
             
             currentStep = step;
         }
@@ -439,66 +345,57 @@
         });
 
         // Initialize introjs walkthrough
-        function startIntroJs() {
-            const intro = introJs();
-            
-            intro.setOptions({
-                steps: [
-                    {
-                        element: document.querySelector('.sidebar'),
-                        intro: 'Use these numbered icons to navigate between different steps of the tutorial. Click on any number to jump directly to that step.',
-                        position: 'right'
-                    },
-                    {
-                        element: document.querySelector('.instructions-panel'),
-                        intro: 'Read the step-by-step instructions in this middle panel. These detailed instructions will guide you through each Shapr3D navigation technique.',
-                        position: 'right'
-                    },
-                    {
-                        element: document.querySelector('.content-display'),
-                        intro: 'View demonstration videos that show exactly how to perform each navigation action in Shapr3D.',
-                        position: 'left'
-                    },
-                    {
-                        element: document.querySelector('.navigation'),
-                        intro: 'Use these buttons to move forward and backward through the tutorial steps.',
-                        position: 'top'
-                    },
-                    {
-                        element: document.getElementById('current-step-title'),
-                        intro: 'This shows which navigation technique you are currently learning. Always check this to know where you are in the tutorial.',
-                        position: 'bottom'
-                    }
-                ],
-                showBullets: true,
-                showProgress: true,
-                disableInteraction: false,
-                doneLabel: 'Got it!'
-            });
-            
-            intro.start();
-            
-            // After tour completes, show a success message
-            intro.oncomplete(function() {
-                confetti({
-                    particleCount: 100,
-                    spread: 70,
-                    origin: { y: 0.6 },
-                    colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'startWalkthrough' || e.target.parentElement.id === 'startWalkthrough') {
+                const intro = introJs();
+                
+                intro.setOptions({
+                    steps: [
+                        {
+                            element: document.querySelector('.sidebar'),
+                            intro: 'Use these icons to navigate between the introduction and the main tutorial step.',
+                            position: 'right'
+                        },
+                        {
+                            element: document.querySelector('.instructions-panel'),
+                            intro: 'Read the step-by-step instructions in this middle panel. These detailed instructions will guide you through the shell process.',
+                            position: 'right'
+                        },
+                        {
+                            element: document.querySelector('.content-display'),
+                            intro: 'View the demonstration video that shows exactly how to use the Shell tool in Shapr3D.',
+                            position: 'left'
+                        },
+                        {
+                            element: document.querySelector('.navigation'),
+                            intro: 'Use these buttons to move between the introduction and main tutorial.',
+                            position: 'top'
+                        }
+                    ],
+                    showBullets: true,
+                    showProgress: true,
+                    disableInteraction: false,
+                    doneLabel: 'Got it!'
                 });
-            });
-        }
+                
+                intro.start();
+                
+                // After tour completes, show a success message
+                intro.oncomplete(function() {
+                    confetti({
+                        particleCount: 100,
+                        spread: 70,
+                        origin: { y: 0.6 },
+                        colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
+                    });
+                });
+            }
+        });
 
         // Initialize with first step and set up tooltips
         document.addEventListener('DOMContentLoaded', () => {
             showStep(0);
             setupTooltips();
-            
-            // Attach event listener to walkthrough button
-            const walkButton = document.getElementById('startWalkthrough');
-            if (walkButton) {
-                walkButton.addEventListener('click', startIntroJs);
-            }
             
             // Update tooltips on window resize
             window.addEventListener('resize', () => {

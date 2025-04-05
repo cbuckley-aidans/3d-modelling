@@ -6,6 +6,14 @@
     <title>SHAPR3D TUTORIALS</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Favicon Icons -->
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
     <style>
         :root {
             --primary-bg: #ffffff;
@@ -262,6 +270,13 @@
                 width: 90%;
             }
         }
+
+        .card-shell::before {
+    background-color: #00BCD4;
+}
+.card-shell .card-icon {
+    background-color: #00BCD4;
+}
     </style>
 </head>
 <body>
@@ -313,14 +328,15 @@
                 <h2 class="card-title">Offsetting</h2>
                 <p class="card-description">Learn to create parallel outlines of existing shapes for walls, shells, and precise measurements.</p>
             </a>
-            
-            <a href="revolving.html" class="card card-revolve">
+
+            <a href="shelling.html" class="card card-shell">
                 <div class="card-icon">
-                    <i class="fa-solid fa-rotate"></i>
+                    <i class="fa-solid fa-clone"></i>
                 </div>
-                <h2 class="card-title">Revolving</h2>
-                <p class="card-description">Create cylindrical objects by revolving 2D profiles around an axis—perfect for vases, bottles, and wheels.</p>
+                <h2 class="card-title">Shelling</h2>
+                <p class="card-description">Learn how to hollow out solid objects with uniform wall thickness, creating lightweight parts with structural integrity.</p>
             </a>
+            
         </div>
     </div>
 </body>
