@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Challenge: Dieter Rams-Inspired Radio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="tutorial-container">
+        <!-- Left Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-logo">SHAPR3D<br>DESIGN CHALLENGE</div>
+            <div class="step-button active" data-step="0" data-tooltip="Overview">
+                <i class="fas fa-list-ol"></i>
+            </div>
+            <div class="step-button" data-step="1" data-tooltip="Setup and Speaker Grill">
+                <span>1</span>
+            </div>
+            <div class="step-button" data-step="2" data-tooltip="Buttons and Visualisation">
+                <span>2</span>
+            </div>
+            <div class="step-button" data-step="3" data-tooltip="Arc Sketch Tool">
+                <span>3</span>
+            </div>
+            <div class="step-button" data-step="4" data-tooltip="Scale and Offset Edge">
+                <span>4</span>
+            </div>
+            <div class="step-button" data-step="5" data-tooltip="Extruding Techniques">
+                <span>5</span>
+            </div>
+            <div class="step-button" data-step="6" data-tooltip="Sweep Tool">
+                <span>6</span>
+            </div>
+        </div>
+
+        <!-- Middle Instructions Panel -->
+        <div class="instructions-panel">
+            <h1 id="current-step-title">Overview and Inspiration</h1>
+            
+            <div id="step-instructions">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button id="prevButton" class="nav-button" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="nextButton" class="nav-button">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-text">Progress: <span id="progress-percentage">0%</span></div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="footer">
+                Made with <span style="color: var(--accent-color);">♥</span> by <span id="creator-name">Buckley</span>
+            </div>
+        </div>
+
+        <!-- Right Content Display Area -->
+        <div class="content-display">
+            <div class="card">
+                <h2 id="content-title">Overview and Inspiration</h2>
+                <div id="media-content">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing images -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" class="modal-content">
+    </div>
+
+    <script>
+        // Tutorial content configuration
+        const stepTitles = [
+            "Overview and Inspiration",
+            "Setup and Speaker Grill",
+            "Buttons and Visualisation Modes",
+            "Arc Sketch Tool",
+            "Scale and Offset Edge",
+            "Extruding Techniques",
+            "Sweep Tool"
+        ];
+
+        const stepInstructions = [
+            // Step 0: Overview and Inspiration
+            `<h3>Design Challenge Introduction</h3>
+            
+            <div class="card">
+                <p><strong>Learning Intentions:</strong></p>
+                <ol class="steps-list">
+                    <li>Learn advanced Shapr3D modelling techniques and tools</li>
+                    <li>Develop spatial awareness and 3D thinking skills</li>
+                    <li>Create a mock-up design using various modelling operations</li>
+                </ol>
+            
+                <p><strong>Success Criteria:</strong></p>
+                <ol class="steps-list">
+                    <li>Apply advanced tools including extrude, fillet, chamfer, pattern, and arc tools</li>
+                    <li>Demonstrate understanding of sketch-based modelling workflows</li>
+                </ol>
+            </div>
+
+            <div class="alert-box alert-warning">
+                <p><strong><i class="fas fa-exclamation-triangle"></i> Important Note</strong></p>
+                <p>This is <strong>not a functional design</strong>. The measurements are not accurate, and the elements are not usable in a real product. This challenge is designed to introduce you to thinking in terms of shapes, forms, and general 3D design principles rather than creating a working replica.</p>
+            </div>
+
+            <div class="card">
+                <h4>About Dieter Rams</h4>
+                <p>Dieter Rams is one of my favourite designers. His aesthetic is very characteristic and can still be seen in Braun products.</p>
+                <p>Dieter Rams is a German industrial designer whose work has profoundly influenced modern product design. As the chief design officer at Braun from 1961 to 1995, Rams developed a design philosophy centered on simplicity, functionality, and timeless aesthetic appeal.</p>
+                
+                
+            </div>
+
+            <div class="tip-box">
+                <div class="tip-title"><i class="fas fa-lightbulb"></i> Design Aesthetic</div>
+                <p>Rams' designs are characterised by clean lines, minimal ornamentation, neutral colours (especially white and grey), and a focus on geometric forms. His work emphasises the relationship between form and function, where every element serves a purpose and nothing is superfluous.</p>
+            </div>`,
+            
+            // Step 1: Setup and Speaker Grill
+            `<h3>Setting Up Your Design</h3>
+            <p>Begin by establishing the basic form of your radio and creating the distinctive speaker grill pattern.</p>
+            
+            <div class="card">
+                <h4>Initial Setup:</h4>
+                <ol class="steps-list">
+                    <li><strong>Import Image:</strong> Bring in your reference image of a Dieter Rams cassette player to use as a design guide</li>
+                    <li><strong>Switch View:</strong> Go to the Top View to work from above</li>
+                    <li><strong>Sketch Rectangle:</strong> Draw a rectangle that matches the basic shape of your reference</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Creating the Main Body:</h4>
+                <ol class="steps-list">
+                    <li><strong>Extrude:</strong> Select the face of your rectangle and press <span class="kbd">E</span>. Drag the arrow up to create the 3D body</li>
+                    <li><strong>Round the Edges:</strong> Select the four vertical edges of your body while holding <span class="kbd">Shift</span>. Press <span class="kbd">F</span> and drag the arrow to create a soft, rounded effect</li>
+                    <li><strong>Top Face Fillet:</strong> Select the top face and press <span class="kbd">F</span> again. Drag to create a fillet on the top edges for a smoother look</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Designing the Speaker Grill:</h4>
+                <ol class="steps-list">
+                    <li><strong>New Sketch on Face:</strong> Select the top face of your body and click Sketch</li>
+                    <li><strong>Draw Circle:</strong> Draw a circle on the face where the speaker grill will be</li>
+                    <li><strong>Draw Rectangle:</strong> Add a thin rectangle to the same sketch, overlapping the circle</li>
+                    <li><strong>Pattern Tool:</strong> Select the rectangle, click the three dots in the menu, and choose Pattern. Drag the arrow down and adjust the Quantity to repeat the rectangle across the circle</li>
+                    <li><strong>Adjust Positioning:</strong> Use the <span class="kbd">M</span> key to move the rectangles if needed to ensure they are centred within the circle</li>
+                    <li><strong>Subtract Extrude:</strong> Select alternating segments of the pattern while holding <span class="kbd">Shift</span>. Press <span class="kbd">E</span> and drag downwards. The software should automatically switch to 'Subtract' to cut the grill pattern into the body</li>
+                    <li><strong>Clean Up:</strong> Hide your sketches in the Items menu by clicking the eye icon to see the final result</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts Mentioned:</h4>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item">
+                        <span class="kbd">E</span>
+                        <p class="shortcut-action">Extrude</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">F</span>
+                        <p class="shortcut-action">Fillet</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">M</span>
+                        <p class="shortcut-action">Move</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">S</span>
+                        <p class="shortcut-action">Sketch</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">Shift</span>
+                        <p class="shortcut-action">Select Multiple</p>
+                    </div>
+                </div>
+            </div>`,
+            
+            // Step 2: Buttons and Visualisation Modes
+            `<h3>Adding Control Buttons</h3>
+            <p>Create the functional buttons on your radio's face plate and learn how to use different viewing modes to check your work.</p>
+            
+            <div class="card">
+                <h4>Create the Button Sketches:</h4>
+                <ol class="steps-list">
+                    <li>Ensure you are in the <strong>Top</strong> view</li>
+                    <li>Click the main face plate of the radio body to select it</li>
+                    <li>Select the Sketch tool (or press <span class="kbd">S</span>) and choose the Rectangle tool</li>
+                    <li>Draw two small rectangles for the buttons (you can draw them manually rather than using a pattern tool)</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Position the Buttons:</h4>
+                <ol class="steps-list">
+                    <li>Select both rectangle sketches</li>
+                    <li>Press <span class="kbd">M</span> to activate the Move tool</li>
+                    <li>Use the arrows to nudge the buttons into your desired location on the face plate</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Extrude the Buttons:</h4>
+                <ol class="steps-list">
+                    <li>Select the faces of both button sketches</li>
+                    <li>Tilt your view slightly to see the 3D depth</li>
+                    <li>Drag the vertical arrow up to extrude the buttons out from the body</li>
+                    <li><strong>Adjust the Draft Angle:</strong> Drag the horizontal arrow (curved icon) to add a slight angle to the sides of the buttons, giving them a tapered look</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Refine with Fillets:</h4>
+                <ol class="steps-list">
+                    <li>Hold <span class="kbd">Shift</span> and select the top face of both buttons</li>
+                    <li>Press <span class="kbd">F</span> to activate the Fillet tool</li>
+                    <li>Drag to round off the top edges for a smoother, finished look</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Using Visualisation Modes:</h4>
+                <p>To check your progress, you can switch between different viewing modes:</p>
+                <ol class="steps-list">
+                    <li><strong>Visualise View:</strong> Press <span class="kbd-combo"><span class="kbd">Alt</span><span class="kbd-plus">+</span><span class="kbd">V</span></span>. This provides a high-quality render to show how the design will look when printed or manufactured</li>
+                    <li><strong>Wireframe (X-Ray) View:</strong> Press <span class="kbd-combo"><span class="kbd">Alt</span><span class="kbd-plus">+</span><span class="kbd">W</span></span>. This allows you to see through the model to check internal alignment. Press <span class="kbd-combo"><span class="kbd">Alt</span><span class="kbd-plus">+</span><span class="kbd">W</span></span> again to return to the standard view</li>
+                    <li><strong>Manual Toggle:</strong> These modes can also be accessed by clicking 'View' in the top menu bar</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts Mentioned:</h4>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item">
+                        <span class="kbd">S</span>
+                        <p class="shortcut-action">Sketch</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">M</span>
+                        <p class="shortcut-action">Move</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">F</span>
+                        <p class="shortcut-action">Fillet</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd-combo"><span class="kbd">Alt</span><span class="kbd-plus">+</span><span class="kbd">V</span></span>
+                        <p class="shortcut-action">Visualise View</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd-combo"><span class="kbd">Alt</span><span class="kbd-plus">+</span><span class="kbd">W</span></span>
+                        <p class="shortcut-action">Wireframe View</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">Shift</span>
+                        <p class="shortcut-action">Select Multiple</p>
+                    </div>
+                </div>
+            </div>`,
+            
+            // Step 3: Arc Sketch Tool
+            `<h3>Creating Rounded Slots</h3>
+            <p>Learn to use the Arc tool to create slots with rounded ends, perfect for cassette openings and decorative elements.</p>
+            
+            <div class="card">
+                <h4>Preparation - Selecting the Face:</h4>
+                <ol class="steps-list">
+                    <li>Before sketching, select the specific face where you want to add the new detail</li>
+                    <li>Click on the Sketch icon in the left-hand toolbar</li>
+                    <li>Choose the Rectangle tool</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Creating the Main Slot:</h4>
+                <ol class="steps-list">
+                    <li>Draw a narrow rectangle on the selected face. Click to start, drag to the desired size, and click again to finish</li>
+                    <li><strong>Extrude the rectangle:</strong>
+                        <ul>
+                            <li>Select the rectangle's face</li>
+                            <li>Drag it downwards to create a recessed slot</li>
+                            <li>Adjust the angle of the extrusion to give the slot a tapered look</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Adding Rounded Ends with the Arc Tool:</h4>
+                <ol class="steps-list">
+                    <li>Start a new sketch on the bottom face of the slot you just created</li>
+                    <li>Select the <strong>Arc tool</strong> (specifically the 3-Point Arc)</li>
+                    <li><strong>Create the top cap:</strong>
+                        <ul>
+                            <li>Click on one upper corner of the rectangle</li>
+                            <li>Click on the opposite upper corner</li>
+                            <li>Move your mouse upwards to define the curve. Aim for 180° for a perfect semi-circle</li>
+                            <li>Click a third time to confirm</li>
+                        </ul>
+                    </li>
+                    <li><strong>Create the bottom cap:</strong>
+                        <ul>
+                            <li>Repeat the same process for the bottom two corners of the rectangle, curving the arc downwards</li>
+                        </ul>
+                    </li>
+                    <li><strong>Extrude the entire capped shape:</strong>
+                        <ul>
+                            <li>Select all the faces of the new shape (the original rectangle and the two new arcs)</li>
+                            <li>Extrude downwards into the model</li>
+                            <li>Adjust the angle again for a consistent, professional finish</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            `,
+            
+            // Step 4: Scale and Offset Edge
+            `<h3>Building Complex Forms</h3>
+            <p>Master the Scale tool and Offset Edge function to create dials, insets, and layered details.</p>
+            
+            <div class="card">
+                <h4>Sketch the Dial Base:</h4>
+                <ol class="steps-list">
+                    <li>Select the Rectangle Tool from the sketch menu</li>
+                    <li>Draw a small rectangle near the location of your dial</li>
+                </ol>
+                
+                <div class="tip-box">
+                    <div class="tip-title"><i class="fas fa-info-circle"></i> Tip</div>
+                    <p>If you forget to select a specific face first, your sketch might "fall to the floor" (the default ground plane). Don't worry - this is easy to fix!</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4>Re-positioning the Sketch:</h4>
+                <p>If your sketch isn't on the correct surface:</p>
+                <ol class="steps-list">
+                    <li>Open the Items List on the left side of the screen</li>
+                    <li>Select the sketch you just created</li>
+                    <li>Tap <span class="kbd">M</span> on your keyboard (or select the Move tool)</li>
+                    <li>Use the arrows to drag the sketch up until it sits on the face of your model</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Extrude into 3D:</h4>
+                <ol class="steps-list">
+                    <li>Tap on the face of your rectangle sketch to select it</li>
+                    <li>An arrow will appear; pull it outward to create a 3D block</li>
+                    <li>Adjust the thickness until it looks like a sturdy base for a dial</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Tapering the Shape (Scaling):</h4>
+                <p>To give the dial a more professional, "mushroom" or trapezoidal look:</p>
+                <ol class="steps-list">
+                    <li>Select the top face of the 3D block you just created</li>
+                    <li>Tap <span class="kbd">S</span> on your keyboard (or select the Scale tool)</li>
+                    <li>Drag the scale handle inward. This shrinks the top face while keeping the base the same size, creating a nice taper</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Applying a Chamfer:</h4>
+                <p>Adding angled edges (chamfers) makes the part look more realistic and ergonomic.</p>
+                <ol class="steps-list">
+                    <li>Select the top face or the outer edges of your dial</li>
+                    <li>Select the Chamfer/Fillet tool</li>
+                    <li>Drag the arrow to create a slanted edge</li>
+                </ol>
+                
+                <div class="tip-box">
+                    <div class="tip-title"><i class="fas fa-info-circle"></i> Note</div>
+                    <p>This often requires some trial and error to find the distance that looks best for your specific design.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <h4>Creating the Rectangular Inset:</h4>
+                <ol class="steps-list">
+                    <li>Select the front face of your radio body to activate it</li>
+                    <li>Open the Sketch tool (or press <span class="kbd">S</span>) and select Rectangle</li>
+                    <li>Draw a rectangle on the lower-left section of the face</li>
+                    <li>Extrude the rectangle inwards to create a shallow inset</li>
+                    <li>Apply a taper/angle to the extrusion to give the inset sloped sides</li>
+                    <li>Select the top horizontal edge of this inset and use the Fillet tool (<span class="kbd">F</span>) to smooth it out into a rounded slope</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Designing the Dial and Speaker Details:</h4>
+                <ol class="steps-list">
+                    <li>Select the main face again and start a new sketch</li>
+                    <li>Choose the Circle tool (<span class="kbd">C</span>) and draw a large circle on the bottom right of the radio</li>
+                    <li>Extrude the circle inwards slightly to create the base for the dial</li>
+                    <li>Use the <strong>Offset Edge tool</strong> (found under the 'More' menu when a face is selected) to create a smaller circle inside the first one</li>
+                    <li>Extrude this offset section downwards to create a visible gap or "depth" effect around the dial</li>
+                    <li>Draw another Circle in the centre of the previous ones and extrude it outwards to create the physical dial knob</li>
+                    <li>Select the top edge of this dial knob and use the Fillet tool (<span class="kbd">F</span>) to give it a smooth, rounded edge</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts Mentioned:</h4>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item">
+                        <span class="kbd">M</span>
+                        <p class="shortcut-action">Move</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">S</span>
+                        <p class="shortcut-action">Scale / Sketch</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">F</span>
+                        <p class="shortcut-action">Fillet</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">R</span>
+                        <p class="shortcut-action">Rectangle</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">C</span>
+                        <p class="shortcut-action">Circle</p>
+                    </div>
+                </div>
+            </div>`,
+            
+            // Step 5: Extruding Techniques
+            `<h3>Advanced Extrusion Methods</h3>
+            <p>Learn how to create separate bodies using the 'New Body' extrude operation to add details like latches and clasps.</p>
+            
+            <div class="card">
+                <h4>Creating and Positioning the Sketch:</h4>
+                <ol class="steps-list">
+                    <li><strong>Select the Rectangle Tool:</strong> Go to the Sketch menu or press <span class="kbd">R</span></li>
+                    <li><strong>Draw the Shape:</strong> Draw a small rectangle on the side of the main chassis</li>
+                    <li><strong>Reposition the Sketch:</strong> If the sketch is buried inside the model, select the rectangle and press <span class="kbd">M</span> (Move) to pull it out so it sits on the outer surface of the chassis</li>
+                    <li><strong>Aligning:</strong> Adjust the rectangle until it is flush with the edge where you want the latch to sit</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Extruding with the 'New Body' Override:</h4>
+                <ol class="steps-list">
+                    <li><strong>Start the Extrude:</strong> Click the face of your rectangle and drag the arrow downward into the chassis</li>
+                    <li><strong>Change the Operation:</strong> By default, Shapr3D will try to "Subtract" (cut a hole). To fix this, click the three-dot icon (or the operation bubble) that appears near the extrude arrow</li>
+                    <li><strong>Select 'New Body':</strong> This creates a separate 3D object that is moulded to the shape of the chassis rather than cutting into it</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Refining the Shape (Fillet and Chamfer):</h4>
+                <ol class="steps-list">
+                    <li><strong>Select Edges:</strong> Click on the outer edges of your new extruded body</li>
+                    <li><strong>Apply Fillet/Chamfer:</strong> Drag the arrow to round the edges (Fillet) or create an angled slope (Chamfer). This gives the latch a more ergonomic, "moulded" look</li>
+                    <li><strong>Experiment:</strong> Adjust the radius of the curves until the latch matches the aesthetic of the reference image</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Final Adjustments:</h4>
+                <ol class="steps-list">
+                    <li><strong>Offset Face:</strong> Click on the top or side faces of the latch. Drag the arrows to "squish" or expand the shape to fine-tune its thickness and height</li>
+                    <li><strong>Review:</strong> Rotate your view to ensure the latch sits correctly against the main body of the radio</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <div class="tip-title"><i class="fas fa-lightbulb"></i> Design Tip</div>
+                <p>The 'New Body' operation is excellent for creating attachments, clasps, handles, and other components that sit on the surface of your main model without cutting into it. This technique maintains the integrity of your main body while adding realistic details.</p>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts Mentioned:</h4>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item">
+                        <span class="kbd">R</span>
+                        <p class="shortcut-action">Rectangle</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">M</span>
+                        <p class="shortcut-action">Move</p>
+                    </div>
+                </div>
+            </div>`,
+            
+            // Step 6: Sweep Tool
+            `<h3>Creating a Curved Cable Input</h3>
+            <p>This section shows how to create a curved shape using the Sweep tool in Shapr3D.</p>
+            
+            <div class="card">
+                <h4>Step 1: Create the First Circle</h4>
+                <ol class="steps-list">
+                    <li><strong>Select the Back Face:</strong> Click on the back surface of your 3D model</li>
+                    <li><strong>Draw a Circle:</strong> Select the Circle tool (or press <span class="kbd">C</span>)</li>
+                    <li><strong>Set the Size:</strong> Click on the centre of the face and draw a circle. In the video, the diameter is set to 5.6 mm. This will be the thickness of your cable</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Step 2: Create the Target Circle</h4>
+                <ol class="steps-list">
+                    <li><strong>Change View:</strong> Switch to the Top view using the orientation cube in the top-right corner</li>
+                    <li><strong>Align the Centre:</strong> Hover over the centre of your first circle. Shapr3D will show a purple alignment line to help you stay centred</li>
+                    <li><strong>Draw the Second Circle:</strong> Click on the ground plane and draw another circle with the same diameter (5.6 mm)
+                        <ul>
+                            <li><strong>Note:</strong> Both circles must be the same size for a consistent cable look</li>
+                        </ul>
+                    </li>
+                    <li><strong>Positioning:</strong> Select the second circle and use the Move tool to slide it away from the model, giving the cable space to curve</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Step 3: Draw the Curve (The Path)</h4>
+                <ol class="steps-list">
+                    <li><strong>Change View:</strong> Switch to the Right view</li>
+                    <li><strong>Select the Arc Tool:</strong> Go to the Sketch menu and select 3-Point Arc</li>
+                    <li><strong>Connect the Circles:</strong>
+                        <ul>
+                            <li>Click on the top edge of the first circle (on the model)</li>
+                            <li>Click on the top edge of the second circle (on the ground)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Set the Angle:</strong> Move your mouse to create a curve. Type 90 into the angle box to create a perfect quarter-circle bend</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Step 4: Use the Sweep Tool</h4>
+                <ol class="steps-list">
+                    <li><strong>Activate Sweep:</strong> Press <span class="kbd">W</span> on your keyboard or find Sweep in the Tools menu</li>
+                    <li><strong>Select the Profile:</strong> Click on the face of the first circle (the one on the model)</li>
+                    <li><strong>Select the Path:</strong> Click on the Arc you just drew</li>
+                    <li><strong>Confirm:</strong> Shapr3D will automatically generate the 3D curve. Click the blue checkmark to finish</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts Mentioned:</h4>
+                <div class="shortcut-grid">
+                    <div class="shortcut-item">
+                        <span class="kbd">C</span>
+                        <p class="shortcut-action">Circle</p>
+                    </div>
+                    <div class="shortcut-item">
+                        <span class="kbd">W</span>
+                        <p class="shortcut-action">Sweep</p>
+                    </div>
+                </div>
+            </div>`
+        ];
+
+        const stepMedia = [
+            // Step 0: Overview and Inspiration
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8Mp1Fgwk/XZEPWo2q5JUku4wpc9BEKA/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+
+            <div class="carousel">
+                <div class="carousel-controls">
+                    <button class="carousel-btn prev-btn">&#10094;</button>
+                    <button class="carousel-btn next-btn">&#10095;</button>
+                </div>
+                <div class="carousel-container" id="carousel-rams">
+                    <div class="carousel-slide">
+                        <div class="image-container">
+                            <img src="https://designwanted.com/wp-content/uploads/2022/02/dieter-rams-5-scaled.jpg.webp" alt="Dieter Rams design example 1" class="cursor-pointer">
+                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
+                        </div>
+                        <p>Example of Dieter Rams' minimalist design aesthetic</p>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="image-container">
+                            <img src="https://miro.medium.com/v2/resize:fit:1400/0*NnZekFv3Km_ct2Es" alt="Dieter Rams design example 2" class="cursor-pointer">
+                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
+                        </div>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="image-container">
+                            <img src="https://static01.nyt.com/images/2014/09/29/t-magazine/29dieter-web-oloizia-slide-X5F4/29dieter-web-oloizia-slide-X5F4-articleLarge-v3.jpg?quality=75&auto=webp&disable=upscale" alt="Dieter Rams design example 3" class="cursor-pointer">
+                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
+                        </div>
+                        <p>Clean lines and geometric forms</p>
+                    </div>
+                    <div class="carousel-slide">
+                        <div class="image-container">
+                            <img src="https://images.squarespace-cdn.com/content/v1/5d6700e799e03b0001e82f2b/1590622590274-O4IFAB8DFI5T672EY80N/ramscollection.png" alt="Dieter Rams design example 4" class="cursor-pointer">
+                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
+                        </div>
+                        <p>Very purposeful use of colour</p>
+                    </div>
+                </div>
+                <div class="carousel-indicators" id="carousel-indicators-rams">
+                    <div class="carousel-indicator active" data-index="0"></div>
+                    <div class="carousel-indicator" data-index="1"></div>
+                    <div class="carousel-indicator" data-index="2"></div>
+                    <div class="carousel-indicator" data-index="3"></div>
+                </div>
+            </div>`,
+            
+            // Step 1: Setup and Speaker Grill
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8MixSzRw/tFV767VqNLK9xcSkd3dk8A/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 2: Buttons and Visualisation Modes
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8Mim9pOQ/4lbc7oGv-s6UD6z-LH-X4g/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 3: Arc Sketch Tool
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8MoDKeo0/KXTXV1HTXsqfRM4Pbij7Cg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 4: Scale and Offset Edge
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8MgvB6sU/4hmeBtDV8bbJl9LJe5MuhQ/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 5: Extruding Techniques
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8Mr9yZp4/I0pV8ATYTvFysjvjyVY8uQ/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 6: Sweep Tool
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8Mreh24g/oHs4KDWeAMb62P3AXdw2aA/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`
+        ];
+
+        // Current step tracking
+        let currentStep = 0;
+        const totalSteps = stepInstructions.length;
+
+        // DOM Elements
+        const stepButtons = document.querySelectorAll('.step-button');
+        const stepTitleEl = document.getElementById('current-step-title');
+        const instructionsPanel = document.getElementById('step-instructions');
+        const mediaContent = document.getElementById('media-content');
+        const contentTitle = document.getElementById('content-title');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressBar = document.querySelector('.progress');
+        const progressPercentage = document.getElementById('progress-percentage');
+
+        // Image modal
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalClose = document.querySelector('.modal-close');
+
+        // Initialize the tutorial
+        function showStep(step) {
+            // Update active step button
+            stepButtons.forEach((button, index) => {
+                button.classList.toggle('active', index === step);
+            });
+
+            // Update step title
+            stepTitleEl.textContent = stepTitles[step];
+            contentTitle.textContent = stepTitles[step];
+
+            // Update content
+            instructionsPanel.innerHTML = stepInstructions[step];
+            mediaContent.innerHTML = stepMedia[step];
+
+            // Update navigation buttons
+            prevButton.disabled = step === 0;
+            nextButton.style.display = step === totalSteps - 1 ? 'none' : 'flex';
+            
+            // Update progress
+            const progress = Math.round(((step + 1) / totalSteps) * 100);
+            progressBar.style.width = `${progress}%`;
+            progressPercentage.textContent = `${progress}%`;
+            
+            // Initialize carousels if present
+            initCarousels();
+            
+            currentStep = step;
+        }
+
+        // Initialize all carousels on the page
+        function initCarousels() {
+            document.querySelectorAll('.carousel').forEach((carouselElement) => {
+                const carouselContainer = carouselElement.querySelector('.carousel-container');
+                if (!carouselContainer) return;
+                
+                const slides = carouselContainer.querySelectorAll('.carousel-slide');
+                if (slides.length <= 1) return;
+                
+                const prevBtn = carouselElement.querySelector('.prev-btn');
+                const nextBtn = carouselElement.querySelector('.next-btn');
+                const indicators = carouselElement.querySelector('.carousel-indicators');
+                
+                if (!prevBtn || !nextBtn || !indicators) return;
+                
+                indicators.innerHTML = '';
+                slides.forEach((_, i) => {
+                    const indicator = document.createElement('div');
+                    indicator.className = `carousel-indicator ${i === 0 ? 'active' : ''}`;
+                    indicator.dataset.index = i;
+                    indicator.addEventListener('click', () => {
+                        scrollToSlide(carouselContainer, indicators, i);
+                    });
+                    indicators.appendChild(indicator);
+                });
+                
+                carouselContainer.dataset.currentSlide = '0';
+                
+                prevBtn.onclick = function() {
+                    const currentSlide = parseInt(carouselContainer.dataset.currentSlide || '0');
+                    const newSlide = (currentSlide - 1 + slides.length) % slides.length;
+                    scrollToSlide(carouselContainer, indicators, newSlide);
+                    carouselContainer.dataset.currentSlide = newSlide.toString();
+                };
+                
+                nextBtn.onclick = function() {
+                    const currentSlide = parseInt(carouselContainer.dataset.currentSlide || '0');
+                    const newSlide = (currentSlide + 1) % slides.length;
+                    scrollToSlide(carouselContainer, indicators, newSlide);
+                    carouselContainer.dataset.currentSlide = newSlide.toString();
+                };
+            });
+        }
+
+        function scrollToSlide(carousel, indicators, index) {
+            const slideWidth = carousel.clientWidth;
+            const scrollPosition = slideWidth * index;
+            
+            carousel.scrollTo({
+                left: scrollPosition,
+                behavior: 'smooth'
+            });
+            
+            const allIndicators = indicators.querySelectorAll('.carousel-indicator');
+            allIndicators.forEach((ind, i) => {
+                ind.classList.toggle('active', i === index);
+            });
+        }
+
+        function setupTooltips() {
+            const existingTooltips = document.querySelectorAll('.tooltip');
+            existingTooltips.forEach(t => t.remove());
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            document.body.appendChild(tooltip);
+            
+            const stepButtons = document.querySelectorAll('.step-button');
+            stepButtons.forEach(button => {
+                const tooltipText = button.getAttribute('data-tooltip');
+                if (!tooltipText) return;
+                
+                button.addEventListener('mouseenter', () => {
+                    tooltip.textContent = tooltipText;
+                    
+                    const rect = button.getBoundingClientRect();
+                    if (window.innerWidth <= 1024) {
+                        tooltip.className = 'tooltip bottom';
+                        tooltip.style.top = `${rect.bottom + 10}px`;
+                        tooltip.style.left = `${rect.left + rect.width/2}px`;
+                        tooltip.style.transform = 'translateX(-50%)';
+                    } else {
+                        tooltip.className = 'tooltip right';
+                        tooltip.style.top = `${rect.top + rect.height/2}px`;
+                        tooltip.style.left = `${rect.right + 10}px`;
+                        tooltip.style.transform = 'translateY(-50%)';
+                    }
+                    
+                    tooltip.style.opacity = '1';
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+            });
+        }
+
+        // Event Listeners
+        stepButtons.forEach((button, index) => {
+            button.addEventListener('click', () => showStep(index));
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentStep < totalSteps - 1) showStep(currentStep + 1);
+        });
+
+        // Image modal functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG' && e.target.parentElement.classList.contains('image-container')) {
+                modal.style.display = 'block';
+                modalImg.src = e.target.src;
+                modalImg.alt = e.target.alt;
+            }
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Creator name with confetti
+        document.getElementById('creator-name').addEventListener('click', () => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.8 },
+                colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
+            });
+        });
+
+        // Initialize with first step and set up tooltips
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(0);
+            setupTooltips();
+            
+            window.addEventListener('resize', () => {
+                setupTooltips();
+            });
+            
+            document.querySelectorAll('.step-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    setTimeout(setupTooltips, 100);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
