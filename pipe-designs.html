@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frog Hotel Pipe Design Tutorial</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        /* Custom styling for tip-box lists */
+        .tip-box ul {
+            margin-top: 10px;
+            margin-bottom: 0;
+            padding-left: 25px;
+        }
+        
+        .tip-box ul li {
+            margin-bottom: 8px;
+        }
+        
+        .tip-box ul li:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="tutorial-container">
+        <!-- Left Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-logo">FROG HOTEL<br>PIPE DESIGN</div>
+            <div class="step-button active" data-step="0" data-tooltip="Introduction">
+                <i class="fas fa-list-ol"></i>
+            </div>
+            <div class="step-button" data-step="1" data-tooltip="Establishing Dimensions">
+                <span>1</span>
+            </div>
+            <div class="step-button" data-step="2" data-tooltip="Angled Fittings">
+                <span>2</span>
+            </div>
+            <div class="step-button" data-step="3" data-tooltip="Custom Fittings">
+                <span>3</span>
+            </div>
+        </div>
+
+        <!-- Middle Instructions Panel -->
+        <div class="instructions-panel">
+            <h1 id="current-step-title">Introduction</h1>
+            
+            <div id="step-instructions">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button id="prevButton" class="nav-button" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="nextButton" class="nav-button">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-text">Progress: <span id="progress-percentage">0%</span></div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="footer">
+                Made with <span style="color: var(--accent-color);">♥</span> by <span id="creator-name">Buckley</span>
+            </div>
+        </div>
+
+        <!-- Right Content Display Area -->
+        <div class="content-display">
+            <div class="card">
+                <h2 id="content-title">Introduction</h2>
+                <div id="media-content">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing images -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" class="modal-content">
+    </div>
+
+    <script>
+        // Tutorial content configuration
+        const stepTitles = [
+            "Introduction",
+            "Establishing Dimensions & Creating the Pipe",
+            "Creating Angled Pipe Fittings",
+            "Creating Custom Fittings"
+        ];
+
+        const stepInstructions = [
+            // Step 0: Introduction
+            `<h3>Learning Intentions and Success Criteria</h3>
+            
+            <div class="card">
+                <p><strong>Learning Intentions:</strong></p>
+                <ol class="steps-list">
+                    <li>Learn how to model parts that perfectly fit real-world PVC pipes in Shapr3D</li>
+                    <li>Understand how to create angled pipe fittings and joints</li>
+                    <li>Design custom 3D-printed fittings for standard store-bought PVC pipes</li>
+                </ol>
+            
+                <p><strong>Success Criteria:</strong></p>
+                <ol class="steps-list">
+                    <li>Create accurate 3D pipe models using precise measurements</li>
+                    <li>Design 45-degree and 90-degree elbow joints for pipe systems</li>
+                    <li>Produce custom fittings with proper clearances for real-world assembly</li>
+                </ol>
+            </div>`,
+            
+            // Step 1: Establishing Dimensions & Creating the Pipe
+            `<h3>Phase 1: Establish Your Dimensions</h3>
+            <p>To ensure your 3D model matches the physical pipe you bought, you need three key numbers. For this project, we are using a standard 90mm PVC Stormwater Pipe.</p>
+            
+            <div class="card">
+                <h4>Required Measurements:</h4>
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="background-color: var(--secondary-bg); border: 2px solid var(--outline-color);">
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Measurement</th>
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Value</th>
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Outside Diameter (OD)</td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">90mm</td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">The width across the very outer edges of the pipe</td>
+                        </tr>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Inside Diameter (ID)</td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">87.5mm</td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">The width of the hollow opening inside the pipe</td>
+                        </tr>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Wall Thickness</td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">2.5mm</td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">The thickness of the PVC material itself</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <div class="image-container" style="margin-top: 20px; text-align: center;">
+                    <img src="https://dwfog8poqakx0.cloudfront.net/wp-content/uploads/2025/03/image-10.png" alt="PVC pipe measurement diagram showing outside diameter, inside diameter, and wall thickness" class="cursor-pointer" style="max-width: 100%; border-radius: var(--border-radius); border: 2px solid var(--outline-color);">
+                    <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
+                </div>
+            </div>
+
+            <h3>Phase 2: Sketching the Pipe Profile</h3>
+            <p>Start by creating a 2D "footprint" of the pipe. This ensures the walls are the exact thickness needed.</p>
+            
+            <div class="card">
+                <h4>Steps:</h4>
+                <ol class="steps-list">
+                    <li><strong>Select the Circle Tool:</strong> Go to the Sketch menu and select Circle (or press <span class="kbd">C</span>)</li>
+                    <li><strong>Draw the Outer Circle:</strong> Click the centre point of the grid and pull the cursor out. Before clicking again, type "90" on your keyboard and press Enter. This sets the OD</li>
+                    <li><strong>Draw the Inner Circle:</strong> Click the same centre point as before. Pull the cursor out and type "87.5", then press Enter</li>
+                    <li><strong>Confirm the Sketch:</strong> You should now see two concentric circles forming a "donut" shape. This represents the cross-section of your pipe</li>
+                </ol>
+            </div>
+
+            <h3>Phase 3: Extruding into 3D</h3>
+            <p>Extrusion is how we turn that flat sketch into a solid, hollow tube.</p>
+            
+            <div class="card">
+                <h4>Steps:</h4>
+                <ol class="steps-list">
+                    <li><strong>Select the Wall:</strong> Click the space between the two circles. This area (the "wall") will highlight in blue</li>
+                    <li><strong>Activate Extrude:</strong> Select the Extrude tool from the sidebar (or press <span class="kbd">E</span>)</li>
+                    <li><strong>Set the Length:</strong> Click the blue arrow and drag it upward. To be precise, type the length you want your pipe to be (e.g., 100 for 100mm) and press Enter</li>
+                    <li><strong>Finish:</strong> Click anywhere in the empty dark space to finalise the shape. You now have an accurately sized 3D pipe</li>
+                </ol>
+            </div>
+
+            <div class="tip-box">
+                <div class="tip-title"><i class="fas fa-lightbulb"></i> Important: The Tolerance Test</div>
+                <p>Before committing to a large print, always perform a "Fit Test." 3D printers and real PVC pipes can vary by tiny fractions of a millimetre.</p>
+                <p><strong>Print a "Sliver":</strong> Instead of printing a whole pipe, extrude a tiny version—only about 5mm or 10mm tall.</p>
+                <p><strong>Test the Connection:</strong> Try to slide your printed part onto the real PVC pipe.</p>
+                <ul>
+                    <li>Too tight? Go back to your sketch and increase the diameter by 0.1mm or 0.2mm</li>
+                    <li>Too loose? Decrease the diameter slightly</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts:</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: var(--secondary-bg); border: 2px solid var(--outline-color);">
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Shortcut</th>
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Tool</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);"><span class="kbd">C</span></td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Circle Tool</td>
+                        </tr>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);"><span class="kbd">E</span></td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Extrude Tool</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>`,
+            
+            // Step 2: Creating Angled Pipe Fittings
+            `<h3>Creating Angled Pipe Fittings</h3>
+            <p>Angled joints make it easier for frogs to enter and peek out of their habitat. Here is how to create 45-degree and 90-degree elbow joints.</p>
+
+            <h3>Research Your Dimensions</h3>
+            <p>Before modelling, check the specifications of the real-world part you want to emulate (e.g., a PVC Stormwater Elbow). For this project, we are using:</p>
+            
+            <div class="card">
+                <ul class="steps-list">
+                    <li><strong>Angle:</strong> 45°</li>
+                    <li><strong>Length/Radius:</strong> 95mm</li>
+                </ul>
+            </div>
+
+            <h3>Sketch the Path</h3>
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Select the <strong>3-Point Arc tool</strong> from the Sketch menu</li>
+                    <li>Place your first point on the edge of your existing cylinder</li>
+                    <li>As you draw the arc, two boxes will appear for measurements</li>
+                    <li>Type <strong>45</strong> into the first box to set the angle</li>
+                    <li>Type <strong>95mm</strong> into the second box to set the length (as per the spec sheet)</li>
+                </ol>
+            </div>
+
+            <h3>Apply the Sweep Tool</h3>
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Click on the top face (the rim/wall) of your pipe to select it</li>
+                    <li>From the Tools menu, select <strong>Sweep</strong></li>
+                    <li>Click on the 45-degree arc you just sketched. The pipe will now follow that path to create the elbow joint</li>
+                </ol>
+            </div>
+
+            <h3>Creating a 90-Degree Joint</h3>
+            <p>The process for a 90-degree joint is identical, but with a larger angle:</p>
+            
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Sketch another arc starting from your new opening</li>
+                    <li>Set the angle to <strong>90</strong> instead of 45</li>
+                    <li>Use the Sweep tool again, selecting the face of the pipe and then the new 90-degree path</li>
+                </ol>
+            </div>
+
+            <h3>Preparing for Further Details</h3>
+            <p>To continue sketching on the new angled opening of the pipe:</p>
+            
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Go to the <strong>Add</strong> menu</li>
+                    <li>Select <strong>Construction Plane</strong></li>
+                    <li>Place the plane at the opening of the pipe. This gives you a flat surface to start your next sketch on an angle</li>
+                </ol>
+            </div>
+
+            <h3>Sketch the House Shape</h3>
+            <p>Now, we'll draw the basic footprint of the house.</p>
+            
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Select the new construction plane and click <strong>Sketch</strong></li>
+                    <li>Choose the <strong>Rectangle tool</strong></li>
+                    <li>Click and drag to draw a square</li>
+                    <li>To be precise, tap on the dimension labels and set them both to 100 mm</li>
+                </ol>
+            </div>
+
+            <h3>Build the 3D Box</h3>
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Select the inside of the rectangle you just drew</li>
+                    <li>Use the Extrude tool (or pull the arrow) to pull the shape out into a cube</li>
+                    <li>To make the box hollow, select the top face of the cube</li>
+                    <li>Select the <strong>Shell tool</strong> (press <span class="kbd">H</span>) and drag the arrow inward to set the wall thickness. This creates an open-topped container</li>
+                </ol>
+            </div>
+
+            <h3>Connect the Pipe to the House</h3>
+            <p>To ensure the pipe fits perfectly into the house, we will "project" the pipe's shape onto the box.</p>
+            
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Click on the circular edge of the pipe</li>
+                    <li>Select the <strong>Project tool</strong> (press <span class="kbd">P</span>)</li>
+                    <li>Click on the side face of the house where the pipe should enter. This draws a matching circle directly onto the house wall</li>
+                    <li>Select that new circle on the house and Extrude it inward to "pop" a hole through the wall</li>
+                    <li>Finally, select the end of the pipe and extrude it forward until it meets the house wall</li>
+                </ol>
+            </div>
+
+            <h3>Add Internal Climbing Lips</h3>
+            <p>Since 3D-printed surfaces can be slippery, we'll add "climbing lips" inside the pipe for the frogs.</p>
+            
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Navigate your view to look inside the pipe</li>
+                    <li>Sketch small, thin rectangles or lines along the interior floor of the pipe</li>
+                    <li>Extrude these slightly upward (about 1–2 mm) to create small ridges that act as steps</li>
+                </ol>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts:</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: var(--secondary-bg); border: 2px solid var(--outline-color);">
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Shortcut</th>
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Tool</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);"><span class="kbd">H</span></td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Shell Tool</td>
+                        </tr>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);"><span class="kbd">P</span></td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Project Tool</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>`,
+            
+            // Step 3: Creating Custom Fittings
+            `<h3>Creating Custom Fittings</h3>
+            <p>This guide explains how to create custom 3D-printed fittings that can slide onto standard store-bought PVC pipes.</p>
+
+            <h3>1. Test Your Clearances</h3>
+            <p>Before finalising a large design, it is important to test how your printed parts fit with real PVC pipes.</p>
+            
+            <div class="card">
+                <ul class="steps-list">
+                    <li>Different printers and materials have different tolerances</li>
+                    <li>Recommend doing small test prints first to determine exactly how much "clearing" (space) you need for a snug, secure fit</li>
+                </ul>
+            </div>
+
+            <div class="tip-box">
+                <div class="tip-title"><i class="fas fa-lightbulb"></i> Important: The Tolerance Test</div>
+                <p>Before committing to a large print, always perform a "Fit Test." 3D printers and real PVC pipes can vary by tiny fractions of a millimetre.</p>
+                <p><strong>Print a "Sliver":</strong> Instead of printing a whole pipe, extrude a tiny version—only about 5mm or 10mm tall.</p>
+                <p><strong>Test the Connection:</strong> Try to slide your printed part onto the real PVC pipe.</p>
+                <ul>
+                    <li>Too tight? Go back to your sketch and increase the diameter by 0.1mm or 0.2mm</li>
+                    <li>Too loose? Decrease the diameter slightly</li>
+                </ul>
+            </div>
+
+            <h3>2. Create the Attachment Lip</h3>
+            <p>Once you have your measurements, you can create a lip that extends from your pipe.</p>
+            
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Select the outer edge of the pipe opening</li>
+                    <li>From the sidebar menu, select the <strong>Offset Edge tool</strong> (press <span class="kbd">O</span>)</li>
+                    <li>Drag the arrow or type in a value to create a new circle outside the original edge</li>
+                    <li>For this example, set the offset to 1 mm</li>
+                </ol>
+            </div>
+
+            <h3>3. Extrude the Fitting</h3>
+            <p>Now that you have a thin circular profile, you can turn it into a 3D attachment.</p>
+            
+            <div class="card">
+                <ol class="steps-list">
+                    <li>Select the face of the new outside lip you just created</li>
+                    <li>Use the <strong>Extrude tool</strong> (press <span class="kbd">E</span>) to pull the lip downward</li>
+                    <li>This creates a sleeve that can slide over or into another pipe</li>
+                </ol>
+            </div>
+
+            <div class="alert-box alert-info">
+                <p><strong><i class="fas fa-info-circle"></i> Design Tip</strong></p>
+                <p>You can use this same technique to create various types of custom connectors and attachments for your frog hotel design.</p>
+            </div>
+
+            <div class="card">
+                <h4>Keyboard Shortcuts:</h4>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: var(--secondary-bg); border: 2px solid var(--outline-color);">
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Shortcut</th>
+                            <th style="padding: 10px; text-align: left; border: 2px solid var(--outline-color);">Tool</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);"><span class="kbd">O</span></td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Offset Edge Tool</td>
+                        </tr>
+                        <tr style="border: 2px solid var(--outline-color);">
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);"><span class="kbd">E</span></td>
+                            <td style="padding: 10px; border: 2px solid var(--outline-color);">Extrude Tool</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>`
+        ];
+
+        const stepMedia = [
+            // Step 0: Introduction
+            `<div class="alert-box alert-info">
+                <p><strong>Château de Frog Project</strong></p>
+                <p>This tutorial will guide you through the process of designing custom PVC pipe fittings for a frog hotel using Shapr3D. You'll learn how to create accurate measurements, design angled joints, and produce custom 3D-printed connectors.</p>
+            </div>
+
+            <div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8eCQtMyY/1gqZwzuEpJTWb6pWG_dFyw/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 1
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8eOYMEGM/RWYsO8s3yuRPi_V34IKKiQ/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 2
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8eFXV5NE/8H5u9vR8ay8d4RqxkgkIlg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`,
+            
+            // Step 3
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG8ecNvhjY/HbyET8F9arKAsTVptwAa5A/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>`
+        ];
+
+        // Current step tracking
+        let currentStep = 0;
+        const totalSteps = stepInstructions.length;
+
+        // DOM Elements
+        const stepButtons = document.querySelectorAll('.step-button');
+        const stepTitleEl = document.getElementById('current-step-title');
+        const instructionsPanel = document.getElementById('step-instructions');
+        const mediaContent = document.getElementById('media-content');
+        const contentTitle = document.getElementById('content-title');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressBar = document.querySelector('.progress');
+        const progressPercentage = document.getElementById('progress-percentage');
+
+        // Image modal
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalClose = document.querySelector('.modal-close');
+
+        // Initialize the tutorial
+        function showStep(step) {
+            // Update active step button
+            stepButtons.forEach((button, index) => {
+                button.classList.toggle('active', index === step);
+            });
+
+            // Update step title
+            stepTitleEl.textContent = stepTitles[step];
+            contentTitle.textContent = stepTitles[step];
+
+            // Update content
+            instructionsPanel.innerHTML = stepInstructions[step];
+            mediaContent.innerHTML = stepMedia[step];
+
+            // Update navigation buttons
+            prevButton.disabled = step === 0;
+            nextButton.style.display = step === totalSteps - 1 ? 'none' : 'flex';
+            
+            // Update progress
+            const progress = Math.round(((step + 1) / totalSteps) * 100);
+            progressBar.style.width = `${progress}%`;
+            progressPercentage.textContent = `${progress}%`;
+            
+            currentStep = step;
+        }
+
+        // Simple tooltip implementation
+        function setupTooltips() {
+            // Remove any existing tooltips
+            const existingTooltips = document.querySelectorAll('.tooltip');
+            existingTooltips.forEach(t => t.remove());
+            
+            // Create new tooltip element
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            document.body.appendChild(tooltip);
+            
+            // Add event listeners to all step buttons
+            const stepButtons = document.querySelectorAll('.step-button');
+            stepButtons.forEach(button => {
+                const tooltipText = button.getAttribute('data-tooltip');
+                if (!tooltipText) return;
+                
+                // On mouse enter
+                button.addEventListener('mouseenter', () => {
+                    // Set tooltip text
+                    tooltip.textContent = tooltipText;
+                    
+                    // Position tooltip based on viewport width
+                    const rect = button.getBoundingClientRect();
+                    if (window.innerWidth <= 1024) {
+                        // Position below on mobile
+                        tooltip.className = 'tooltip bottom';
+                        tooltip.style.top = `${rect.bottom + 10}px`;
+                        tooltip.style.left = `${rect.left + rect.width/2}px`;
+                        tooltip.style.transform = 'translateX(-50%)';
+                    } else {
+                        // Position to the right on desktop
+                        tooltip.className = 'tooltip right';
+                        tooltip.style.top = `${rect.top + rect.height/2}px`;
+                        tooltip.style.left = `${rect.right + 10}px`;
+                        tooltip.style.transform = 'translateY(-50%)';
+                    }
+                    
+                    // Make tooltip visible
+                    tooltip.style.opacity = '1';
+                });
+                
+                // On mouse leave
+                button.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+            });
+        }
+
+        // Event Listeners
+        stepButtons.forEach((button, index) => {
+            button.addEventListener('click', () => showStep(index));
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentStep < totalSteps - 1) showStep(currentStep + 1);
+        });
+
+        // Image modal functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG' && e.target.parentElement.classList.contains('image-container')) {
+                modal.style.display = 'block';
+                modalImg.src = e.target.src;
+                modalImg.alt = e.target.alt;
+            }
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Creator name with confetti
+        document.getElementById('creator-name').addEventListener('click', () => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.8 },
+                colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
+            });
+        });
+
+        // Initialize with first step and set up tooltips
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(0);
+            setupTooltips();
+            
+            // Update tooltips on window resize
+            window.addEventListener('resize', () => {
+                setupTooltips();
+            });
+            
+            // Update tooltips whenever a step button is clicked
+            document.querySelectorAll('.step-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    setTimeout(setupTooltips, 100);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
