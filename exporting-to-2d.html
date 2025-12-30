@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exporting 3D Designs to 2D for Laser Cutting</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/inter-ui/3.19.3/inter.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div class="tutorial-container">
+        <!-- Left Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="sidebar-logo">3D TO 2D<br>EXPORT</div>
+            <div class="step-button active" data-step="0" data-tooltip="Introduction">
+                <i class="fas fa-list-ol"></i>
+            </div>
+            <div class="step-button" data-step="1" data-tooltip="Export Workflow">
+                <span>1</span>
+            </div>
+        </div>
+
+        <!-- Middle Instructions Panel -->
+        <div class="instructions-panel">
+            <h1 id="current-step-title">Introduction</h1>
+            
+            <div id="step-instructions">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Navigation Buttons -->
+            <div class="navigation">
+                <button id="prevButton" class="nav-button" disabled><i class="fas fa-arrow-left"></i> Previous</button>
+                <button id="nextButton" class="nav-button">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-text">Progress: <span id="progress-percentage">0%</span></div>
+                <div class="progress-bar">
+                    <div class="progress" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <div class="footer">
+                Made with <span style="color: var(--accent-color);">♥</span> by <span id="creator-name">Buckley</span>
+            </div>
+        </div>
+
+        <!-- Right Content Display Area -->
+        <div class="content-display">
+            <div class="card">
+                <h2 id="content-title">Introduction</h2>
+                <div id="media-content">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for viewing images -->
+    <div id="imageModal" class="modal">
+        <span class="modal-close">&times;</span>
+        <img id="modalImage" class="modal-content">
+    </div>
+
+    <script>
+        // Tutorial content configuration
+        const stepTitles = [
+            "Introduction",
+            "Export Workflow"
+        ];
+
+        const stepInstructions = [
+            // Step 0: Introduction
+            `<h3>Learning Intentions and Success Criteria</h3>
+            
+            <div class="card">
+                <p><strong>Learning Intentions:</strong></p>
+                <ol class="steps-list">
+                    <li>Understand how to create a 2D profile from a 3D design in Shapr3D</li>
+                    <li>Learn how to export designs as SVG files for laser cutting</li>
+                </ol>
+            
+                <p><strong>Success Criteria:</strong></p>
+                <ol class="steps-list">
+                    <li>Successfully project a 3D face onto a construction plane and export it as an SVG</li>
+                    <li>Import the SVG into xTool Creative Space at the correct 1:1 scale</li>
+                </ol>
+            </div>`,
+            
+            // Step 1: Export Workflow
+            `<h3>Export Workflow</h3>
+            <p>Follow these two phases to export your 3D design and prepare it for laser cutting.</p>
+            
+            <div class="card">
+                <h4>Phase 1: Creating the 2D Profile in Shapr3D</h4>
+                <p>To ensure your laser-cut part fits your 3D model perfectly, you need to "project" the 3D face onto a flat 2D surface.</p>
+                <ol class="steps-list">
+                    <li><strong>Create a workspace:</strong> Go to the Add menu and select Construction Plane. Click on the top face of your object, confirm, and drag the plane up so it sits clearly above your model.</li>
+                    <li><strong>Project the shape:</strong> Click on the face of the object you want to laser cut. Select the Project tool (or press <span class="kbd">P</span>), and then click on the construction plane you just created. This creates a 2D sketch of your object's outline on that plane.</li>
+                    <li><strong>Isolate the sketch:</strong> Delete the construction plane. Open your Items list and hide every object and sketch except for the one you just created. You should now see only the flat lines of your part.</li>
+                    <li><strong>Export the file:</strong> Go to File &gt; Export to... and select SVG. Save this file where you can easily find it. The SVG format is essential because it keeps your measurements exact.</li>
+                </ol>
+            </div>
+            
+            <div class="card">
+                <h4>Phase 2: Setting up the Cut in xTool Creative Space</h4>
+                <p>Now that you have your 2D file, you need to prepare it for the laser.</p>
+                <ol class="steps-list">
+                    <li><strong>Import the SVG:</strong> Open your xTool software and drag your saved SVG file directly onto the canvas.</li>
+                    <li><strong>Keep the size accurate:</strong> If a pop-up asks if you want to resize the image, do not do it. The whole point of this process is to maintain the exact 1:1 scale of your 3D model.</li>
+                    <li><strong>Set your parameters:</strong> Select your object and change the output setting from "Score" or "Engrave" to Cut. Adjust your Power and Speed settings based on the material you are using (like 3mm plywood).</li>
+                    <li><strong>Refine (Optional):</strong> If you need to move individual screw holes or specific lines, click the Ungroup button. This allows you to select and edit parts of the sketch independently.</li>
+                </ol>
+            </div>
+            
+            <div class="tip-box">
+                <div class="tip-title"><i class="fas fa-lightbulb"></i> Important</div>
+                <p>Always decline any resize prompts when importing your SVG. Maintaining the exact 1:1 scale ensures your laser-cut parts will fit your 3D printed or modelled components perfectly.</p>
+            </div>`
+        ];
+
+        const stepMedia = [
+            // Step 0: Introduction
+            `<div class="alert-box alert-info">
+                <p><strong>Overview</strong></p>
+                <p>This guide explains how to take a 3D design from Shapr3D and turn it into a perfectly sized 2D file for laser cutting using an xTool laser.</p>
+            </div>`,
+            
+            // Step 1: Export Workflow
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%; padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden; border-radius: 8px; will-change: transform;">
+                <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;"
+                    src="https://www.canva.com/design/DAG9BbgKp9c/IzK6kvTdNcFuLKmmX2MXtg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+                </iframe>
+            </div>`
+        ];
+
+        // Current step tracking
+        let currentStep = 0;
+        const totalSteps = stepInstructions.length;
+
+        // DOM Elements
+        const stepButtons = document.querySelectorAll('.step-button');
+        const stepTitleEl = document.getElementById('current-step-title');
+        const instructionsPanel = document.getElementById('step-instructions');
+        const mediaContent = document.getElementById('media-content');
+        const contentTitle = document.getElementById('content-title');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressBar = document.querySelector('.progress');
+        const progressPercentage = document.getElementById('progress-percentage');
+
+        // Image modal
+        const modal = document.getElementById('imageModal');
+        const modalImg = document.getElementById('modalImage');
+        const modalClose = document.querySelector('.modal-close');
+
+        // Initialize the tutorial
+        function showStep(step) {
+            stepButtons.forEach((button, index) => {
+                button.classList.toggle('active', index === step);
+            });
+
+            stepTitleEl.textContent = stepTitles[step];
+            contentTitle.textContent = stepTitles[step];
+
+            instructionsPanel.innerHTML = stepInstructions[step];
+            mediaContent.innerHTML = stepMedia[step];
+
+            prevButton.disabled = step === 0;
+            nextButton.style.display = step === totalSteps - 1 ? 'none' : 'flex';
+            
+            const progress = Math.round(((step + 1) / totalSteps) * 100);
+            progressBar.style.width = `${progress}%`;
+            progressPercentage.textContent = `${progress}%`;
+            
+            currentStep = step;
+        }
+
+        // Simple tooltip implementation
+        function setupTooltips() {
+            const existingTooltips = document.querySelectorAll('.tooltip');
+            existingTooltips.forEach(t => t.remove());
+            
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            document.body.appendChild(tooltip);
+            
+            const stepButtons = document.querySelectorAll('.step-button');
+            stepButtons.forEach(button => {
+                const tooltipText = button.getAttribute('data-tooltip');
+                if (!tooltipText) return;
+                
+                button.addEventListener('mouseenter', () => {
+                    tooltip.textContent = tooltipText;
+                    
+                    const rect = button.getBoundingClientRect();
+                    if (window.innerWidth <= 1024) {
+                        tooltip.className = 'tooltip bottom';
+                        tooltip.style.top = `${rect.bottom + 10}px`;
+                        tooltip.style.left = `${rect.left + rect.width/2}px`;
+                        tooltip.style.transform = 'translateX(-50%)';
+                    } else {
+                        tooltip.className = 'tooltip right';
+                        tooltip.style.top = `${rect.top + rect.height/2}px`;
+                        tooltip.style.left = `${rect.right + 10}px`;
+                        tooltip.style.transform = 'translateY(-50%)';
+                    }
+                    
+                    tooltip.style.opacity = '1';
+                });
+                
+                button.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                });
+            });
+        }
+
+        // Event Listeners
+        stepButtons.forEach((button, index) => {
+            button.addEventListener('click', () => showStep(index));
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentStep > 0) showStep(currentStep - 1);
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentStep < totalSteps - 1) showStep(currentStep + 1);
+        });
+
+        // Image modal functionality
+        document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'IMG' && e.target.parentElement.classList.contains('image-container')) {
+                modal.style.display = 'block';
+                modalImg.src = e.target.src;
+                modalImg.alt = e.target.alt;
+            }
+        });
+
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+            }
+        });
+
+        // Creator name with confetti
+        document.getElementById('creator-name').addEventListener('click', () => {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.8 },
+                colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            showStep(0);
+            setupTooltips();
+            
+            window.addEventListener('resize', () => {
+                setupTooltips();
+            });
+        });
+    </script>
+</body>
+</html>
