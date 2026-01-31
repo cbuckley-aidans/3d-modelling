@@ -94,15 +94,7 @@
                     <!-- Will be populated by JavaScript -->
                     <div class="alert-box alert-info">
                         <p><strong>Tutorial Overview</strong></p>
-                        <p>Welcome to this beginner's tutorial on Shapr3D! In this guide, you'll learn how to create basic 3D models by sketching 2D shapes and extruding them into the third dimension.</p>
-                    </div>
-
-                    <div class="alert-box alert-warning">
-                        <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
-                        <p>Click the button below to learn how to navigate the tutorial interface.</p>
-                        <button id="startWalkthrough" class="nav-button">
-                            <i class="fas fa-walking"></i> Start Interactive Tour
-                        </button>
+                        <p>In this guide, you'll learn how to create basic 3D models by sketching 2D shapes and extruding them into the third dimension.</p>
                     </div>
                 </div>
             </div>
@@ -233,53 +225,18 @@
             // Step 0: Introduction
             `<div class="alert-box alert-info">
                 <p><strong>Tutorial Overview</strong></p>
-                <p>Welcome to this beginner's tutorial on Shapr3D! In this guide, you'll learn how to create basic 3D models by sketching 2D shapes and extruding them into the third dimension.</p>
+                <p>In this guide, you'll learn how to create basic 3D models by sketching 2D shapes and extruding them into the third dimension.</p>
                 <p>By the end of this tutorial, you'll be able to create simple 3D objects like cylinders, boxes, and more using precise measurements.</p>
-            </div>
-
-            <div class="alert-box alert-warning">
-                <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
-                <p>Click the button below to learn how to navigate the tutorial interface.</p>
-                <button id="startWalkthrough" class="nav-button">
-                    <i class="fas fa-walking"></i> Start Interactive Tour
-                </button>
             </div>`,
             
             // Step 1: Creating a Sketch - Now with video frame above carousel
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/yQPdTD8.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p class="video-caption"><i class="fas fa-play-circle"></i> Video demonstration: Selecting the ground plane to start a new sketch.</p>
-            </div>
-
-            <div class="carousel">
-                <div class="carousel-controls">
-                    <button class="carousel-btn prev-btn">&#10094;</button>
-                    <button class="carousel-btn next-btn">&#10095;</button>
-                </div>
-                <div class="carousel-container" id="carousel-sketch">
-                    <div class="carousel-slide">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/NtjtNxH.png" alt="Shapr3D interface showing Sketch button" class="cursor-pointer">
-                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
-                        </div>
-                        <p>Locate the Sketch button in the toolbar (highlighted in green).</p>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/JMYQdMZ.png" alt="Selecting the ground plane in Shapr3D" class="cursor-pointer">
-                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
-                        </div>
-                        <p>Click on the ground plane (XY plane) to begin your sketch.</p>
-                    </div>
-                </div>
-                <div class="carousel-indicators" id="carousel-indicators-sketch">
-                    <div class="carousel-indicator active" data-index="0"></div>
-                    <div class="carousel-indicator" data-index="1"></div>
-                </div>
-            </div>
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG_8GpC5mk/5Dh0fMcQusvJib4xAI1wUw/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
 
             <div class="tip-box">
                 <div class="tip-title"><i class="fas fa-keyboard"></i> Keyboard Shortcuts</div>
@@ -287,42 +244,13 @@
             </div>`,
             
             // Step 2: Drawing & Dimensioning - Now with video frame above carousel
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/UE9IBBQ.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p class="video-caption"><i class="fas fa-play-circle"></i> Video demonstration: Drawing a circle and adding dimensions</p>
-            </div>
-
-            <div class="carousel">
-                <div class="carousel-controls">
-                    <button class="carousel-btn prev-btn">&#10094;</button>
-                    <button class="carousel-btn next-btn">&#10095;</button>
-                </div>
-                <div class="carousel-container" id="carousel-shapes">
-                    <div class="carousel-slide">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/J4eTuv4.png" alt="Circle tool highlighted in Shapr3D toolbar" class="cursor-pointer">
-                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
-                        </div>
-                        <p>Select the Circle tool from the sketch toolbar (highlighted in green).</p>
-                    </div>
-                    <div class="carousel-slide">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/EyjgOkq.png" alt="Dimension field showing value in mm" class="cursor-pointer">
-                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
-                        </div>
-                        <p>Enter a specific diameter value (measurements are in mm by default).</p>
-                    </div>
-                </div>
-                <div class="carousel-indicators" id="carousel-indicators-shapes">
-                    <div class="carousel-indicator active" data-index="0"></div>
-                    <div class="carousel-indicator" data-index="1"></div>
-                </div>
-            </div>
-
-            
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG_8GqR3SY/nWGClhpuDhpB2TPPba6CCg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
 
             <div class="control-item">
                 <div class="control-icon">
@@ -335,32 +263,13 @@
             </div>`,
             
             // Step 3: Completing the Sketch - Now with video frame above carousel
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/pg7KkFT.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p class="video-caption"><i class="fas fa-play-circle"></i> Video demonstration: Completing and exiting sketch mode</p>
-            </div>
-
-            <div class="carousel">
-                <div class="carousel-controls">
-                    <button class="carousel-btn prev-btn">&#10094;</button>
-                    <button class="carousel-btn next-btn">&#10095;</button>
-                </div>
-                <div class="carousel-container" id="carousel-exit">
-                    <div class="carousel-slide">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/FkfDSKB.png" alt="Exit Sketching button highlighted" class="cursor-pointer">
-                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
-                        </div>
-                        <p>Locate and tap the "Exit Sketching" button (highlighted with green circle).</p>
-                    </div>
-                </div>
-                <div class="carousel-indicators" id="carousel-indicators-exit">
-                    <div class="carousel-indicator active" data-index="0"></div>
-                </div>
-            </div>
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG_8J2jpQs/VDzXjfh3ifRUAMkfZ_9Ptg/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
 
             <div class="tip-box">
                 <div class="tip-title"><i class="fas fa-undo"></i> Editing Your Sketch</div>
@@ -368,32 +277,13 @@
             </div>`,
             
             // Step 4: Extruding - Now with video frame above carousel
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/h9Dbs5Q.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-                <p class="video-caption"><i class="fas fa-play-circle"></i> Video demonstration: Extruding a 2D shape into a 3D object</p>
-            </div>
-
-            <div class="carousel">
-                <div class="carousel-controls">
-                    <button class="carousel-btn prev-btn">&#10094;</button>
-                    <button class="carousel-btn next-btn">&#10095;</button>
-                </div>
-                <div class="carousel-container" id="carousel-extrude">
-                    <div class="carousel-slide">
-                        <div class="image-container">
-                            <img src="https://i.imgur.com/4a6TctM.png" alt="Extrusion with measurement input" class="cursor-pointer">
-                            <div class="zoom-hint"><i class="fas fa-search-plus"></i> Click to zoom</div>
-                        </div>
-                        <p>Select your sketch, drag the extrusion arrows upward, and enter a specific height value (like 5 mm) for precise extrusion.</p>
-                    </div>
-                </div>
-                <div class="carousel-indicators" id="carousel-indicators-extrude">
-                    <div class="carousel-indicator active" data-index="0"></div>
-                </div>
-            </div>
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG_8KfpETQ/7vdK-936tB1d92BiNsXfJw/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
             
             <div class="tip-box">
                 <div class="tip-title"><i class="fas fa-lightbulb"></i> Next Steps</div>
@@ -445,79 +335,12 @@
             progressBar.style.width = `${progress}%`;
             progressPercentage.textContent = `${progress}%`;
             
-            // Initialize carousels if present
-            initCarousels();
-            
             currentStep = step;
         }
 
-        // Initialize all carousels on the page
-        function initCarousels() {
-            // Find all carousel elements in the current step
-            document.querySelectorAll('.carousel').forEach((carouselElement) => {
-                const carouselContainer = carouselElement.querySelector('.carousel-container');
-                if (!carouselContainer) return;
-                
-                const slides = carouselContainer.querySelectorAll('.carousel-slide');
-                if (slides.length <= 1) return;
-                
-                // Get carousel controls
-                const prevBtn = carouselElement.querySelector('.prev-btn');
-                const nextBtn = carouselElement.querySelector('.next-btn');
-                const indicators = carouselElement.querySelector('.carousel-indicators');
-                
-                if (!prevBtn || !nextBtn || !indicators) return;
-                
-                // Clear existing indicators and recreate them
-                indicators.innerHTML = '';
-                slides.forEach((_, i) => {
-                    const indicator = document.createElement('div');
-                    indicator.className = `carousel-indicator ${i === 0 ? 'active' : ''}`;
-                    indicator.dataset.index = i;
-                    indicator.addEventListener('click', () => {
-                        scrollToSlide(carouselContainer, indicators, i);
-                    });
-                    indicators.appendChild(indicator);
-                });
-                
-                // Track the current slide for this carousel
-                carouselContainer.dataset.currentSlide = '0';
-                
-                // Add click handlers to navigation buttons
-                prevBtn.onclick = function() {
-                    const currentSlide = parseInt(carouselContainer.dataset.currentSlide || '0');
-                    const newSlide = (currentSlide - 1 + slides.length) % slides.length;
-                    scrollToSlide(carouselContainer, indicators, newSlide);
-                    carouselContainer.dataset.currentSlide = newSlide.toString();
-                };
-                
-                nextBtn.onclick = function() {
-                    const currentSlide = parseInt(carouselContainer.dataset.currentSlide || '0');
-                    const newSlide = (currentSlide + 1) % slides.length;
-                    scrollToSlide(carouselContainer, indicators, newSlide);
-                    carouselContainer.dataset.currentSlide = newSlide.toString();
-                };
-            });
-        }
+        // Initialize all carousels on the page - Removed
 
-        // Scroll carousel to specific slide
-        function scrollToSlide(carousel, indicators, index) {
-            // Calculate the scroll position
-            const slideWidth = carousel.clientWidth;
-            const scrollPosition = slideWidth * index;
-            
-            // Animate the scroll
-            carousel.scrollTo({
-                left: scrollPosition,
-                behavior: 'smooth'
-            });
-            
-            // Update indicators
-            const allIndicators = indicators.querySelectorAll('.carousel-indicator');
-            allIndicators.forEach((ind, i) => {
-                ind.classList.toggle('active', i === index);
-            });
-        }
+        // Scroll carousel to specific slide - Removed
 
         // Simple tooltip implementation
         function setupTooltips() {

@@ -84,14 +84,6 @@
                         <p><strong>Tutorial Overview</strong></p>
                         <p>This tutorial will guide you through the process of offsetting edges in Shapr3D to create precise concentric shapes and then using extrusion to create functional holes in your 3D models.</p>
                     </div>
-
-                    <div class="alert-box alert-warning">
-                        <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
-                        <p>Click the button below to learn how to navigate the page.</p>
-                        <button id="startWalkthrough" class="nav-button">
-                            <i class="fas fa-walking"></i> Start Interactive Tour
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -177,23 +169,16 @@
                 <p><strong>Tutorial Overview</strong></p>
                 <p>This tutorial will guide you through the process of offsetting edges in Shapr3D to create precise concentric shapes and then using extrusion to create functional holes in your 3D models.</p>
             </div>
-
-            <div class="alert-box alert-warning">
-                <p><strong><i class="fas fa-info-circle"></i> How to use this resource</strong></p>
-                <p>Click the button below to learn how to navigate the page.</p>
-                <button id="startWalkthrough" class="nav-button">
-                    <i class="fas fa-walking"></i> Start Interactive Tour
-                </button>
-            </div>
             `,
             
             // Step 1: Offsetting and Extrusion
-            `<div class="video-container">
-                <video width="100%" controls autoplay loop muted playsinline>
-                    <source src="https://i.imgur.com/pIHQUXA.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
+            `<div style="position: relative; width: 100%; height: 0; padding-top: 56.2500%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAG_8L6K3-o/0k0WRJYyscvgQ-1UJx2EsA/watch?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
             
             <div class="alert-box alert-info">
                 <p><strong>Video Guide</strong></p>
@@ -355,53 +340,7 @@
             });
         });
 
-        // Initialize introjs walkthrough
-        document.addEventListener('click', (e) => {
-            if (e.target.id === 'startWalkthrough' || e.target.parentElement.id === 'startWalkthrough') {
-                const intro = introJs();
-                
-                intro.setOptions({
-                    steps: [
-                        {
-                            element: document.querySelector('.sidebar'),
-                            intro: 'Use these icons to navigate between the introduction and the main tutorial step.',
-                            position: 'right'
-                        },
-                        {
-                            element: document.querySelector('.instructions-panel'),
-                            intro: 'Read the step-by-step instructions in this middle panel. These detailed instructions will guide you through the offsetting process.',
-                            position: 'right'
-                        },
-                        {
-                            element: document.querySelector('.content-display'),
-                            intro: 'View the demonstration video that shows exactly how to perform offsetting and extrusion in Shapr3D.',
-                            position: 'left'
-                        },
-                        {
-                            element: document.querySelector('.navigation'),
-                            intro: 'Use these buttons to move between the introduction and main tutorial.',
-                            position: 'top'
-                        }
-                    ],
-                    showBullets: true,
-                    showProgress: true,
-                    disableInteraction: false,
-                    doneLabel: 'Got it!'
-                });
-                
-                intro.start();
-                
-                // After tour completes, show a success message
-                intro.oncomplete(function() {
-                    confetti({
-                        particleCount: 100,
-                        spread: 70,
-                        origin: { y: 0.6 },
-                        colors: ['#002654', '#f7f7f7', '#f0f0f0', '#191919']
-                    });
-                });
-            }
-        });
+        // Initialize introjs walkthrough - Removed
 
         // Initialize with first step and set up tooltips
         document.addEventListener('DOMContentLoaded', () => {
